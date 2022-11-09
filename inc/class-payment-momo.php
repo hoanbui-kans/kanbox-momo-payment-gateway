@@ -16,11 +16,16 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
             $this->method_description = __('Hỗ trợ thanh toán quét mã qua ứng dụng ví điện tử Momo', 'kanbox'); // will be displayed on the options page
             
             // Gateways can support subscriptions, refunds, saved payment methods,
+            $supports = array(
+                'products'
+            );         
 
-            $this->supports = array(
-                'products',
-                'refunds',
-            );                
+            // Add refunds function if enable 
+            if($this->get_option('enabled_refund') == 'yes'){
+                array_push( $supports , 'refunds');
+            }
+
+            $this->supports = $supports;
 
             // Method with all the options fields
             $this->init_form_fields();

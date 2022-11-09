@@ -14,7 +14,7 @@ return array(
         'title'       => 'Tiêu đề',
         'type'        => 'text',
         'description' => __('Tiêu đề mà người dùng có thể thấy được trong quá trình thanh toán.', 'kanbox'),
-        'default'     => 'Thanh toán Momo',
+        'default'     => __('Thanh toán Momo', 'kanbox'),
         'desc_tip'    => true,
     ),
     'description' => array(
@@ -27,7 +27,7 @@ return array(
         'title'       => 'Tính năng hoàn tiền',
         'label'       => __('Bật tính tính năng hoàn tiền trên đơn hàng', 'kanbox'),
         'type'        => 'checkbox',
-        'description' => 'Để sử dụng được tính năng hoàn tiền, bạn cần được cho phép sử dụng API hoàn tiền của Momo Business',
+        'description' => __('Để sử dụng được tính năng hoàn tiền, bạn cần được cho phép sử dụng API hoàn tiền của Momo Business', 'kanbox'),
         'default'     => 'no'
     ),
     'partner_name' => array(
