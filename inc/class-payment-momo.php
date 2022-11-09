@@ -97,16 +97,12 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
             if ( $this->description ) {
                 // you can instructions for test mode, I mean test card numbers etc.
                 if ( $this->testmode ) {
-                    $this->description .= 'Chế độ thử nghiệm được bật, xin vui lòng sử dụng ứng dụng <a href="https://developers.momo.vn/v3/download/">Momo test</a> để trải nghiệm.';
-                    $this->description .= trim( $this->description );
+                    $this->description .= ' Chế độ thử nghiệm được bật, xin vui lòng sử dụng ứng dụng <a href="https://developers.momo.vn/v3/download/">Momo test</a> để trải nghiệm.';
+                    $this->description = trim( $this->description );
                 }
                 // display the description with <p> tags etc.
-                echo wpautop( wp_kses_post( $this->description )  . ' xin vui lòng xử dụng app <a href="https://referral.momo.vn/ref/MDkwMzg4ODc4MSZndGJiMjAyMg==/referral_others">ví điện tử Momo</a> để thanh toán miễn phí');
+                echo wpautop( wp_kses_post( $this->description ));
             } else {
-                // I will echo() the form, but you can close PHP tags and print it directly in HTML
-                if ( $this->testmode ) {
-                    echo '<p>Chế độ thử nghiệm được bật, xin vui lòng sử dụng ứng dụng <a href="https://developers.momo.vn/v3/download/">Momo test</a> để trải nghiệm.</p>';
-                }
                ?>
                <p><?php echo esc_attr_e('Thanh toán trực tuyến bằng mã quét momo, xin vui lòng xử dụng app', 'kanbox');?> <a href="https://referral.momo.vn/ref/MDkwMzg4ODc4MSZndGJiMjAyMg==/referral_others"><?php echo esc_attr_e('ví điện tử Momo', 'kanbox');?></a> <?php echo esc_attr_e('để thanh toán miễn phí', 'kanbox');?></p>
                <?php
@@ -184,7 +180,7 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
 
             $orderId = time().''; // Mã đơn hàng
             $requestId = time(). $order_id;
-            $transId = $order->get_meta('momo_transid');
+            $transId = get_post_meta( $order_id, '_billing_momo_transid', true );
 
             if(!$transId){
                 return new WP_Error( 'wc-order', __( 'Không tìm thấy ID giao dịch', 'kanbox' ) );
@@ -221,10 +217,7 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
 
         public function query_transaction( $order_id ){
 
-            $order = wc_get_order( $order_id );
-
-            $transId = $order->get_meta('momo_order_id');
-
+            $transId = get_post_meta( $order_id, '_billing_momo_order_id', true );
             $requestId = time()."";
 
             if(!$transId) return;
