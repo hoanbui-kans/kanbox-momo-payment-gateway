@@ -30,6 +30,12 @@ return array(
         'description' => __('Để sử dụng được tính năng hoàn tiền, bạn cần được cho phép sử dụng API hoàn tiền của Momo Business', 'kanbox'),
         'default'     => 'no'
     ),
+    'store_id' => array(
+        'title'       => __('Store Id', 'kanbox'),
+        'type'        => 'text',
+        'description' => __('Tùy chỉnh', 'kanbox'),
+        'desc_tip'    => true,
+    ),
     'partner_name' => array(
         'title'       => __('Tên cửa hàng', 'kanbox'),
         'type'        => 'text',
@@ -73,17 +79,20 @@ return array(
         'type'        => 'text',
         'description' => __('Được cấp bởi Momo Business - môi trường thử nghiệm', 'kanbox'),
         'desc_tip'    => true,
+        'default'     => 'MOMOBKUN20180529'
     ),
     'access_key_test' => array(
         'title'       => __('Access Key test', 'kanbox'),
         'type'        => 'password',
         'description' => __('Được cấp bởi Momo Business - môi trường thử nghiệm', 'kanbox'),
         'desc_tip'    => true,
+        'default'     => 'klm05TvNBzhg7h7j'
     ),
     'serect_key_test' => array(
         'title'       => __('Serect key test', 'kanbox'),
         'type'        => 'password',
         'description' => __('Được cấp bởi Momo Business - môi trường thử nghiệm', 'kanbox'),
         'desc_tip'    => true,
+        'default'     => 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa'
     )
 );

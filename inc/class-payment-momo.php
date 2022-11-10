@@ -39,7 +39,9 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
             $this->testmode = 'yes' === $this->get_option( 'testmode' );
             $this->private_key = $this->testmode ? $this->get_option( 'test_private_key' ) : $this->get_option( 'private_key' );
             $this->publishable_key = $this->testmode ? $this->get_option( 'test_publishable_key' ) : $this->get_option( 'publishable_key' );
-        
+            $this->partnerName = $this->get_option('partner_name');
+            $this->storeId = $this->get_option('store_id');
+
             // Initialize variables 
             $this->partnerCode = $this->testmode == 'yes' 
                 ? $this->get_option('partner_code_test') 
@@ -56,7 +58,9 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
             $endpoint = $this->testmode == 'yes' 
                 ? 'https://test-payment.momo.vn'
                 : 'https://payment.momo.vn';
+
             
+
             $this->create_endpoint = $endpoint . '/v2/gateway/api/create';
             $this->refund_endpoint = $endpoint . '/v2/gateway/api/refund';
             $this->query_endpoint = $endpoint . '/v2/gateway/api/query';
@@ -120,7 +124,6 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
             $order = wc_get_order( $order_id );
             $orderInfo = 'Thanh toán đơn hàng: ' . $order_id;
             $jsonResult = false;
-            $partnerName = $this->get_option('partner_name');
             $extraData = $order_id;
     
             if (!empty($order_id)) {
@@ -133,8 +136,8 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
                 $signature = hash_hmac("sha256", $rawHash, $this->serectkey);
                 $data = array(
                     'partnerCode' => $this->partnerCode,
-                    'partnerName' => $partnerName,
-                    'storeId' 	=> 'Kansite',
+                    'partnerName' => $this->partnerName,
+                    'storeId' => $this->storeId,
                     'requestId' => $requestId,
                     'amount' => $amount,
                     'orderId' => $orderId,
@@ -210,9 +213,10 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
 
             if (!$jsonResult || $jsonResult['resultCode'] != 0) {
                 return new WP_Error( 'wc-order' ,  $jsonResult['message'] );
+            } else {
+                $order->update_status( 'refunded', __('Đã hoàn lại tiền bằng thanh toán Momo', 'kanbox') );
+                return true;
             }
-
-            return true;
         }
 
         public function query_transaction( $order_id ){
@@ -245,8 +249,10 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
         * In case you need a webhook, like PayPal IPN etc
         */
         function webhook_api_momo_redirect_url() {
-            $wc_order_id = $_GET['extraData'];
+        
+            $wc_order_id = sanitize_text_field( $_GET['extraData'] );
             $order = wc_get_order( $wc_order_id );
+
             try {
                 $partnerCode = sanitize_text_field( $_GET["partnerCode"] );
                 $orderId = sanitize_text_field( $_GET["orderId"] );
@@ -262,7 +268,7 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
                 $extraData = sanitize_text_field( $_GET["extraData"] );
                 $m2signature = sanitize_text_field( $_GET["signature"] ); //MoMo signature
                 
-                //Checksum
+                // Checksum
                 $rawHash = "accessKey=" . $this->accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&message=" . $message . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo .
                     "&orderType=" . $orderType . "&partnerCode=" . $this->partnerCode . "&payType=" . $payType . "&requestId=" . $requestId . "&responseTime=" . $responseTime .
                     "&resultCode=" . $resultCode . "&transId=" . $transId;
@@ -274,13 +280,13 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
                 
                 if ($m2signature == $partnerSignature && $order->get_status() != 'processing' && $resultCode == 0) {
                     $order->update_status('processing', 'Đơn hàng đã thanh toán thành công và đang được xử lý');
-                    $order->reduce_order_stock();
+                    wc_reduce_stock_levels($wc_order_id);
                 } else {
                     $order->update_status('pending', 'Đơn hàng đã thanh toán không thành công và đã chuyển thành chờ thanh toán lại');
                 }
                 
                 header("Location:" . esc_url($this->get_return_url( $order )));
-                
+            
             } catch (Exception $e) {
                 echo $response['message'] = $e;
             }
@@ -288,50 +294,54 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
 
         function webhook_api_momo_ipn(){
 
-            if (!empty($_POST)) {
+            $jsonStr = file_get_contents("php://input"); //read the HTTP body.
+            $json = json_decode($jsonStr);
+           
+            if (!empty($json)) {
+                
                 $response = array();
-
-                $wc_order_id = $_POST['extraData'];
-
+                $wc_order_id = $json->extraData;
                 $order = wc_get_order( $wc_order_id );
+
                 try {
-                    $partnerCode = $_POST["partnerCode"];
-                    $orderId = $_POST["orderId"];
-                    $requestId = $_POST["requestId"];
-                    $amount = $_POST["amount"];	
-                    $orderInfo = $_POST["orderInfo"];
-                    $orderType = $_POST["orderType"];
-                    $transId = $_POST["transId"];
-                    $resultCode = $_POST["resultCode"];
-                    $message = $_POST["message"];
-                    $payType = $_POST["payType"];
-                    $responseTime = $_POST["responseTime"];
-                    $extraData = $_POST["extraData"];
-                    $m2signature = $_POST["signature"]; //MoMo signature
-                    
-    
+                    $partnerCode = $json->partnerCode;
+                    $orderId = $json->orderId;
+                    $requestId = $json->requestId;
+                    $amount = $json->amount;	
+                    $orderInfo = $json->orderInfo;
+                    $orderType = $json->orderType;
+                    $transId = $json->transId;
+                    $resultCode = $json->resultCode;
+                    $message = $json->message;
+                    $payType = $json->payType;
+                    $responseTime = $json->responseTime;
+                    $extraData = $json->extraData;
+                    $m2signature = $json->signature; //MoMo signature
+                
                     //Checksum
                     $rawHash = "accessKey=" . $this->accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&message=" . $message . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo .
-                        "&orderType=" . $orderType . "&partnerCode=" . $this->partnerCode . "&payType=" . $payType . "&requestId=" . $requestId . "&responseTime=" . $responseTime .
+                        "&orderType=" . $orderType . "&partnerCode=" . $partnerCode . "&payType=" . $payType . "&requestId=" . $requestId . "&responseTime=" . $responseTime .
                         "&resultCode=" . $resultCode . "&transId=" . $transId;
     
                     $partnerSignature = hash_hmac("sha256", $rawHash, $this->serectkey);
-
+    
                     // Update transaction id to dashboard
                     $this->admin_field->update_payment_meta_data($wc_order_id, $orderId, $transId);
 
                     if ($m2signature == $partnerSignature) {
                         $order->update_status('processing', 'Đơn hàng đã thanh toán thành công và đang được xử lý');
-                        $order->reduce_order_stock();
-                        return;
+                        wc_reduce_stock_levels($wc_order_id);
+                        return wp_send_json( 1, 200, 1 );
                     } else {
                         $order->update_status('pending', 'Đơn hàng đã thanh toán không thành công và đã chuyển thành chờ thanh toán lại');
-                        return;
+                        return wp_send_json( 0, 200, 1 );
                     }
                     
                 } catch (Exception $e) {
                     echo $response['message'] = $e;
                 }
+            } else {
+                return wp_send_json( 1, 204, 1 );
             }
         }
 
