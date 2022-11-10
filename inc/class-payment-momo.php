@@ -154,7 +154,7 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
                     $order->update_status( 'on-hold', __('Đang tiến hành thanh toán', 'kanbox') );
                     return array(
                         'result' => 'success',
-                        'redirect' => $jsonResult['payUrl'],
+                        'redirect' => esc_url( $jsonResult['payUrl'] ),
                     );
                 }
             } else {
@@ -248,19 +248,19 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
             $wc_order_id = $_GET['extraData'];
             $order = wc_get_order( $wc_order_id );
             try {
-                $partnerCode = $_GET["partnerCode"];
-                $orderId = $_GET["orderId"];
-                $requestId = $_GET["requestId"];
-                $amount = $_GET["amount"];	
-                $orderInfo = $_GET["orderInfo"];
-                $orderType = $_GET["orderType"];
-                $transId = $_GET["transId"];
-                $resultCode = $_GET["resultCode"];
-                $message = $_GET["message"];
-                $payType = $_GET["payType"];
-                $responseTime = $_GET["responseTime"];
-                $extraData = $_GET["extraData"];
-                $m2signature = $_GET["signature"]; //MoMo signature
+                $partnerCode = sanitize_text_field( $_GET["partnerCode"] );
+                $orderId = sanitize_text_field( $_GET["orderId"] );
+                $requestId = sanitize_text_field( $_GET["requestId"] );
+                $amount = sanitize_text_field( $_GET["amount"] );	
+                $orderInfo = sanitize_text_field( $_GET["orderInfo"] );
+                $orderType = sanitize_text_field( $_GET["orderType"] );
+                $transId = sanitize_text_field( $_GET["transId"] );
+                $resultCode = sanitize_text_field( $_GET["resultCode"] );
+                $message = sanitize_text_field( $_GET["message"] );
+                $payType = sanitize_text_field( $_GET["payType"] );
+                $responseTime = sanitize_text_field( $_GET["responseTime"] );
+                $extraData = sanitize_text_field( $_GET["extraData"] );
+                $m2signature = sanitize_text_field( $_GET["signature"] ); //MoMo signature
                 
                 //Checksum
                 $rawHash = "accessKey=" . $this->accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&message=" . $message . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo .
@@ -279,7 +279,7 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
                     $order->update_status('pending', 'Đơn hàng đã thanh toán không thành công và đã chuyển thành chờ thanh toán lại');
                 }
                 
-                header("Location:" . $this->get_return_url( $order ));
+                header("Location:" . esc_url($this->get_return_url( $order )));
                 
             } catch (Exception $e) {
                 echo $response['message'] = $e;

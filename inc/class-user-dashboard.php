@@ -20,7 +20,7 @@ if(!class_exists('Kanbox_Momo_WooCommerce_User_Dashboard')) {
                     <tbody>
                             <tr>
                                 <th><?php echo esc_attr_e('Thông tin thanh toán', 'kanbox');?></th>
-                                <td><?php echo $is_paid ? 'Yes' : 'Bạn chưa thanh toán cho đơn hàng này'; ?></td>
+                                <td><?php echo esc_attr_e('Bạn chưa thanh toán cho đơn hàng này', 'kanbox',); ?></td>
                             </tr>
                             <?php if( !$is_paid && $order->get_status() != 'refund' ) : ?>   
                             <tr>
@@ -42,11 +42,11 @@ if(!class_exists('Kanbox_Momo_WooCommerce_User_Dashboard')) {
                             <tbody>
                                 <tr>
                                     <th><?php echo esc_attr_e('Id giao dịch', 'kanbox');?></th>
-                                    <td><mark><?php echo $query_transaction['orderId'];?></mark></td>
+                                    <td><mark><?php echo printf('%d', $query_transaction['orderId']);?></mark></td>
                                 </tr>
                                 <tr>
                                     <th><?php echo esc_attr_e('Trạng thái', 'kanbox');?></th>
-                                    <td><?php echo $query_transaction['message'];?></td>
+                                    <td><?php echo htmlspecialchars($query_transaction['message']);?></td>
                                 </tr>
                             </tbody>
                         </table>

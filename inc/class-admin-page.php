@@ -49,17 +49,17 @@ if(!class_exists('Kanbox_Momo_Admin_Page')){
                     <div class="col-12 col-md-8">
                         <div class="d-flex align-items-center p-3 my-3 text-white bg-white rounded shadow-sm border">
                             <a href="https://kansite.com.vn" class="me-auto">
-                                <img src="<?php echo KANBOX_MOMO_URL . '/assets/img/logo.svg';?>" width="120" height="40" alt="">
+                                <img src="<?php echo esc_url( KANBOX_MOMO_URL . '/assets/img/logo.svg' );?>" width="120" height="40" alt="">
                             </a>
                             <?php 
                                 if($enableMomoPaymentGateWay): ?>
-                                    <a href="<?php echo $MomoPaymentSettingUrl; ?>" class="btn btn-dark">
+                                    <a href="<?php echo esc_url( $MomoPaymentSettingUrl ); ?>" class="btn btn-dark">
                                         Cài đặt thanh toán
                                     </a>
                                     <?php
                                         else: 
                                     ?>
-                                    <a href="<?php echo $PaymentSettingUrl; ?>" class="btn btn-dark position-relative">
+                                    <a href="<?php echo esc_url( $PaymentSettingUrl ); ?>" class="btn btn-dark position-relative">
                                         Bật thanh toán với Momo   
                                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                             1
@@ -74,7 +74,7 @@ if(!class_exists('Kanbox_Momo_Admin_Page')){
                         <div class="my-3 p-3 bg-body rounded shadow-sm border">
                             <h6 class="border-bottom pb-2 mb-3">Các dịch vụ của chúng tôi</h6>
                             <div class="d-flex text-muted p-3 bg-light rounded mb-3">
-                                <img class="bd-placeholder-img flex-shrink-0 me-3 rounded shadow-sm p-2" width="48" height="48" src="<?php echo KANBOX_MOMO_URL . 'assets/img/design-svgrepo-com.svg';?>" alt="">
+                                <img class="bd-placeholder-img flex-shrink-0 me-3 rounded shadow-sm p-2" width="48" height="48" src="<?php echo esc_url( KANBOX_MOMO_URL . 'assets/img/design-svgrepo-com.svg' );?>" alt="">
                                 <a target="_blank" class="text-decoration-none text-muted" href="https://kansite.com.vn/dich-vu/thiet-ke-website-tron-goi-cho-doanh-nghiep">
                                     <p class="pb-3 mb-0 small lh-sm">
                                         <strong class="d-block text-dark mb-1 d-block">Thiết kế website</strong>
@@ -83,7 +83,7 @@ if(!class_exists('Kanbox_Momo_Admin_Page')){
                                 </a>
                             </div>
                             <div class="d-flex text-muted p-3 bg-light rounded mb-3">
-                                <img class="bd-placeholder-img flex-shrink-0 me-3 rounded shadow-sm p-2" width="48" height="48" src="<?php echo KANBOX_MOMO_URL . 'assets/img/marketing-svgrepo-com.svg';?>" alt="">
+                                <img class="bd-placeholder-img flex-shrink-0 me-3 rounded shadow-sm p-2" width="48" height="48" src="<?php echo esc_url( KANBOX_MOMO_URL . 'assets/img/marketing-svgrepo-com.svg' );?>" alt="">
                                 <a target="_blank" class="text-decoration-none text-muted" href="https://kansite.com.vn/dich-vu/giai-phap-marketing-online-cho-doanh-nghiep">
                                     <p class="pb-3 mb-0 small lh-sm">
                                         <strong class="d-block text-dark mb-1 d-block">Dịch vụ marketing online</strong>
@@ -92,7 +92,7 @@ if(!class_exists('Kanbox_Momo_Admin_Page')){
                                 </a>
                             </div>
                             <div class="d-flex text-muted bg-light rounded mb-3 p-3">
-                                <img class="bd-placeholder-img flex-shrink-0 me-3 rounded shadow-sm p-2" width="48" height="48" src="<?php echo KANBOX_MOMO_URL . 'assets/img/user-seo-and-web-svgrepo-com.svg';?>" alt="">
+                                <img class="bd-placeholder-img flex-shrink-0 me-3 rounded shadow-sm p-2" width="48" height="48" src="<?php echo esc_url( KANBOX_MOMO_URL . 'assets/img/user-seo-and-web-svgrepo-com.svg' );?>" alt="">
                                 <a target="_blank" class="text-decoration-none text-muted" href="https://kansite.com.vn/dich-vu/giai-phap-quan-tri-noi-dung-website-cho-doanh-nghiep">
                                     <p class="pb-3 mb-0 small lh-sm">
                                             <strong class="d-block text-dark mb-1 d-block">Quản trị website</strong>
@@ -105,7 +105,7 @@ if(!class_exists('Kanbox_Momo_Admin_Page')){
                         <div class="my-3 p-3 bg-body rounded shadow-sm border">
                             <h6 class="border-bottom pb-2 mb-3">Hướng dẫn chi tiết</h6>
                             <div class="d-flex text-muted p-3 bg-light rounded mb-3">
-                                <img class="bd-placeholder-img flex-shrink-0 me-3 rounded shadow-sm p-2" width="48" height="48" src="<?php echo KANBOX_MOMO_URL . 'assets/img/momo.png';?>" alt="">
+                                <img class="bd-placeholder-img flex-shrink-0 me-3 rounded shadow-sm p-2" width="48" height="48" src="<?php echo esc_url( KANBOX_MOMO_URL . 'assets/img/momo.png' );?>" alt="">
                                 <div class="pb-3 mb-0 small lh-sm w-100">
                                     <a target="_blank" class="text-decoration-none text-muted" href="https://business.momo.vn/signup">
                                         <strong class="text-dark mb-1 d-block">Đăng ký Momo Business</strong>
@@ -114,7 +114,7 @@ if(!class_exists('Kanbox_Momo_Admin_Page')){
                                 </div>
                             </div>
                             <div class="d-flex text-muted p-3 bg-light rounded mb-3">
-                                <img class="bd-placeholder-img flex-shrink-0 me-3 rounded shadow-sm p-2" width="48" height="48" src="<?php echo KANBOX_MOMO_URL . 'assets/img/shop-svgrepo-com.svg';?>" alt="">
+                                <img class="bd-placeholder-img flex-shrink-0 me-3 rounded shadow-sm p-2" width="48" height="48" src="<?php echo esc_url( KANBOX_MOMO_URL . 'assets/img/shop-svgrepo-com.svg' );?>" alt="">
                                 <div class="pb-3 mb-0 small lh-sm w-100">
                                     <a target="_blank" class="text-decoration-none text-muted" href="https://kansite.com.vn/bai-viet/huong-dan-cai-dat-thanh-toan-momo-voi-woocommerce">
                                         <p>
@@ -125,7 +125,7 @@ if(!class_exists('Kanbox_Momo_Admin_Page')){
                                 </div>
                             </div>
                             <div class="d-flex text-muted bg-light rounded mb-3 p-3">
-                                <img class="bd-placeholder-img flex-shrink-0 me-3 rounded shadow-sm p-2" width="48" height="48" src="<?php echo KANBOX_MOMO_URL . 'assets/img/online-support-svgrepo-com.svg';?>" alt="">
+                                <img class="bd-placeholder-img flex-shrink-0 me-3 rounded shadow-sm p-2" width="48" height="48" src="<?php echo esc_url( KANBOX_MOMO_URL . 'assets/img/online-support-svgrepo-com.svg' );?>" alt="">
                                 <div class="pb-3 mb-0 small lh-sm w-100">
                                     <a target="_blank" class="text-decoration-none text-muted" href="https://kansite.com.vn/lien-he">
                                         <p>
