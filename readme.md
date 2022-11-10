@@ -1,5 +1,6 @@
-# kanbox-momo-payment-gateway
+# Kanbox Momo Payment Gateway
  Plugin thanh toán trực tuyến WooCommerce với Momo
+
 
 ## Ví Momo là gì?
 
@@ -33,6 +34,7 @@ Sau khi cài đặt Plugin thanh toán Momo với WooCommerce, bạn sẽ thấy
 -   Bật tích hợp thanh toán Momo với Woocommerce: Bạn cần điền đầy đủ thông tin của tài khoản thực tế, hãy bật chế độ thử nghiệm nếu bạn chưa sẵn sàng.
 -   Bật tính năng hoàn tiền bằng ví điện tử Momo dành cho cửa hàng: tính năng này cần yêu cầu hoạt động của API hoàn tiền của Momo Business.
 -   Chế độ thử nghiệm: Bật chế độ thử nghiệm dành cho cửa hàng, bạn cần điền đầy đủ thông tin của tài khoản thử nghiệm .
+
 
 ![](https://kanbox.vn/wp-content/uploads/2022/11/screencapture-localhost-elementor-wp-admin-admin-php-2022-11-09-16_09_47.png)
 
