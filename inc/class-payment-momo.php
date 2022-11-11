@@ -60,21 +60,25 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
                 : 'https://payment.momo.vn';
 
             
-
+            // API enpoint 
+            // https://developers.momo.vn/v3/docs/payment/api/credit/onetime
             $this->create_endpoint = $endpoint . '/v2/gateway/api/create';
             $this->refund_endpoint = $endpoint . '/v2/gateway/api/refund';
             $this->query_endpoint = $endpoint . '/v2/gateway/api/query';
             
+            // Redirect and IPN Url Handle pages
             $this->redirectUrl = self::get_momo_payment_redirect_url();
             $this->ipnUrl = self::get_momo_payment_ipn_url(); 
 
+            // Webhook Redirect and IPN
             add_action( 'woocommerce_api_momo_ipn', [$this, 'webhook_api_momo_ipn'] );    
             add_action( 'woocommerce_api_momo_redirect_url', [$this, 'webhook_api_momo_redirect_url'] ); 
 
+            // Display Admin Order Id and Transaction Id
             $this->admin_field = Kanbox_Momo_Payment_Admin_field::get_instance();
         }
     
-        // IPN URL
+        // Ipn URL
         static function get_momo_payment_ipn_url(){
             return get_home_url() . '/wc-api/momo_ipn';
         }
@@ -93,10 +97,9 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
         }
     
         /**
-        * You will need it if you want your custom credit card form, Step 4 is about it
+        * Custom Kanbox Momo Gateway payment method
         */
         public function payment_fields() {
-            
                 // ok, let's display some description before the payment form
             if ( $this->description ) {
                 // you can instructions for test mode, I mean test card numbers etc.
@@ -115,7 +118,7 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
         }
 
         /*
-        * We're processing the payments here, everything about it is in Step 5
+        * We're processing the payments here
         */
         function process_payment( $order_id ) {
         
@@ -126,7 +129,9 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
             $jsonResult = false;
             $extraData = $order_id;
     
-            if (!empty($order_id)) {
+            if (!empty($order_id) && !$order->is_paid()) {
+                // Update Status to on-hold 
+                $order->update_status( 'on-hold', __('Đang tiến hành thanh toán', 'kanbox') );
                 $orderId = time().''; // Mã đơn hàng
                 $amount = $order->get_total();
                 $requestId = time(). $order_id;
@@ -150,18 +155,30 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
                     'requestType' => $requestType,
                     'signature' => $signature
                 );
-    
-                $result = execPostRequest($this->create_endpoint, json_encode($data));
-                $jsonResult = json_decode($result, true);  // decode json
+                
+                // Send request to serve
+                $result = execPostRequest($this->create_endpoint, wp_json_encode($data));
+
+                // Out if the request failed
+                if(!$result){
+                    return;
+                }
+
+                $jsonResult = json_decode($result, true);  // Decode json result
+
                 if($jsonResult){
-                    $order->update_status( 'on-hold', __('Đang tiến hành thanh toán', 'kanbox') );
                     return array(
                         'result' => 'success',
                         'redirect' => esc_url( $jsonResult['payUrl'] ),
                     );
                 }
+
             } else {
-                wc_add_notice('Lỗi khởi tạo thanh toán, xin vui lòng kiểm tra lại cài đặt và thử lại sau.', 'error' );
+                if($order->is_paid()){
+                    wc_add_notice('Đơn hàng đã được thanh toán, xin vui lòng liên hệ quản trị viên để được hỗ trợ.', 'error' );
+                } else {
+                    wc_add_notice('Lỗi khởi tạo thanh toán, xin vui lòng kiểm tra lại cài đặt và thử lại sau.', 'error' );
+                }
                 return;
             }
         }
@@ -207,7 +224,7 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
                 'signature' => $signature,
             );
 
-            $result = execPostRequest($this->refund_endpoint, json_encode($data));
+            $result = execPostRequest($this->refund_endpoint, wp_json_encode($data));
 
             $jsonResult = json_decode($result, true);  // decode json
 
@@ -240,13 +257,13 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
                 'lang' => 'vi'
             );
             $jsonResult = [];
-            $result = execPostRequest($this->query_endpoint, json_encode($data));
+            $result = execPostRequest($this->query_endpoint, wp_json_encode($data));
             $jsonResult = json_decode($result, true);  // decode json
             return $jsonResult;
         }
 
-                /*
-        * In case you need a webhook, like PayPal IPN etc
+        /*
+        * Redirect Webhook
         */
         function webhook_api_momo_redirect_url() {
         
@@ -288,14 +305,17 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
                 header("Location:" . esc_url($this->get_return_url( $order )));
             
             } catch (Exception $e) {
-                echo $response['message'] = $e;
+                return wp_send_json( $response['message'], 206, 1 );
             }
         }
 
+        /*
+        * IPN Webhook
+        */
         function webhook_api_momo_ipn(){
 
             $jsonStr = file_get_contents("php://input"); //read the HTTP body.
-            $json = json_decode($jsonStr);
+            $json = wp_json_encode($jsonStr);
            
             if (!empty($json)) {
                 
@@ -338,12 +358,11 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
                     }
                     
                 } catch (Exception $e) {
-                    echo $response['message'] = $e;
+                    return wp_send_json( $response['message'], 206, 1 );
                 }
             } else {
                 return wp_send_json( 1, 204, 1 );
             }
         }
-
     }
 }
