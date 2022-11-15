@@ -1,33 +1,61 @@
-- Ví Momo là gì?
-Ví MoMo là ứng dụng cho phép người dùng thanh toán và giao dịch hơn 200 dịch vụ như thanh toán điện nước, thanh toán vay tiêu dùng, nạp tiền điện thoại... Momo cũng là là đối tác của chiến lược của hơn 25 ngân hàng như Vietcombank, OCB, VPBank...
+=== Kanbox Momo Payment Gateway - WooCommerce for Vietnam ===
+Contributors: Kan Solution, CH Agency
+Tags: Momo Business, Momo payment, Momo Qr code
+Requires at least: 3.0
+Tested up to: 5.7.1
+Requires PHP: 7.0
+Stable tag: 1.0.0
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-- Hồ Sơ Doanh Nghiệp
-MoMo mang lại trải nghiệm tích hợp thanh toán dễ dàng và an toàn. Bắt đầu bằng việc đăng ký thông tin doanh nghiệp trên Cổng M4B để tạo hồ sơ doanh nghiệp. Bạn sẽ cần hoàn tất xác thực thông tin doanh nghiệp, cũng như hoàn tất quy trình tích hợp kỹ thuật để mang MoMo đến người dùng của bạn.
+Install Momo Business Payment Integration Plugin with Woocommerce
 
-Plugin tích hợp thanh toán Momo với WooCommerce là gì?
-Với số lượng tăng lên hằng ngày của số người dùng ví điện tử Momo cùng với tính năng thanh toán trực tuyến thuận tiện cho các kênh bán hàng có thể quản lý trực tiếp doanh thu từ đơn hàng phát sinh trên nền tảng Woocommerce. Kan Solution ra mắt Plugin tích hợp thanh toán Momo với Woocommerce hoàn toàn miễn phí và hiệu quả giúp các kênh website thương mại sử dụng Woocommerce có thể dễ dàng tích hợp thanh toán nhanh chóng
+== Description ==
 
-Hướng dẫn cài đặt thanh toán Momo với WooCommerce
-- Để sử dụng plugin thanh toán Momo với Woocommerce, bạn cần:
-+ Sử dụng Wordpress có phiên bản 5.7 trở lên và phiên bản PHP 5.6 trở lên để tránh xảy ra lỗi trong quá trình sử dụng
-+ Hồ sơ doanh nghiệp với Momo Business: https://business.momo.vn/
-+ App hỗ trợ thử nghiệm thanh toán Momo với môi trường test (version: 4.0.5): https://developers.momo.vn/v3/vi/download/
-+ Plugin thanh toán với Momo: https://github.com/hoanbui-kans/kanbox-momo-payment-gateway/releases/tag/Kanbox_Momo_Woocommerce
+**MoMo wallet is an application that allows users to pay and transact more than 200 services such as electricity and water payment, consumer loan payment, phone recharge... Momo is also a strategic partner of more than 25 banks banks such as Vietcombank, OCB, VPBank...**
 
-1. Cài đặt Plugin tích hợp thanh toán với Woocommerce 
-Bạn chỉ cần tải file plugin: kanbox-momo-payment-gateway.zip phiên bản mới nhất và cài đặt trong mục Plugin của Dashboard Wordpress của bạn
+= FEATURES =
 
-2. Cấu hình thanh toán Momo với WooCommerce
-Sau khi cài đặt Plugin thanh toán Momo với WooCommerce, bạn sẽ thấy một Menu Thanh toán mới Momo trên Dashboard của mình, hãy click vào Bật thanh toán với Momo để tiến hành vào bảng quản trị thanh toán nhanh của Woocomerce
-Tại bảng cài đặt thanh toán WooCommerce click chọn bật: Cổng thanh toán quét mã QR Momo – Thanh toán Momo
-Mô tả bảng cài đặt thanh toán Momo cho Woocommerce với các chức năng sẵn có:
-+ Bật tích hợp thanh toán Momo với Woocommerce: Bạn cần điền đầy đủ thông tin của tài khoản thực tế, hãy bật chế độ thử nghiệm nếu bạn chưa sẵn sàng.
-+ Bật tính năng hoàn tiền bằng ví điện tử Momo dành cho cửa hàng: tính năng này cần yêu cầu hoạt động của API hoàn tiền của Momo Business.
-+ Chế độ thử nghiệm: Bật chế độ thử nghiệm dành cho cửa hàng, bạn cần điền đầy đủ thông tin của tài khoản thử nghiệm .
+* Enable payment integration Momo with Woocommerce: You need to fill in the information of the actual account, turn on the test mode if you are not ready.
+* Enable the Momo e-wallet cashback feature for stores: this feature requires the operation of the Momo Business Refund API.
+* Simple transaction cashback with Momo Business.
+* Test mode: Turn on the test mode for the store, you need to fill in the information of the test account.
 
-3. Các Layout bao gồm
-- Lựa chọn thanh toán bằng Momo trong trang thanh toán WooCommerce: 
-- Thanh toán đơn hàng trên môi trường thực tế
-- Đơn hàng đã nhận nhưng chưa thanh toán thành công, lúc này, người dùng có thể đăng nhập vào tài khoản và tiến hành thanh toán lại đơn hàng.
-- Hoàn tiền giao dịch sau khi thanh toán hoàn tất
 
+= ROAD MAP =
+
+In the future, this plugin will add more and more features for the manager payment method:
+
+* Manage customers who have paid via Momo application.
+* Bank card payment for payment gateway
+* Add personal QR code for payment.
+
+= WHERE CAN I CONTRIBUTE MY CODE OR IDEA? =
+
+* You can report bugs or contribute code on [this GitHub repo](https://github.com/hoanbui-kans/kanbox-momo-payment-gateway).
+* Please also do let us know if the "bug" is just a grammar/spelling error in both English and Vietnamese. We try to make our products as perfect as possible.
+
+= INSTALLATION =
+
+Follow these steps to install and use the plugin:
+
+1. Upload the plugin files to the `/wp-content/plugins/kanbox-momo-payment-gateway` directory, or install the plugin through the WordPress plugins screen directly.
+1. Activate the plugin through the `Plugins` screen in WordPress.
+1. Go to the `Dashboard -> Thanh toán Momo` screen and configure the plugin.
+
+== Screenshots ==
+
+1. The settings page under WooCommerce -> Settings -> Payments -> Cổng thanh toán quét mã QR Momo – Thanh toán Momo.
+2. Add payment options with momo e-wallet.
+3. Add order refund function in order detail management.
+4. Record the payment code and transaction code in the order information.
+5. Function to look up payment information of logged in users.
+
+== Changelog ==
+
+See all change logs on [GitHub repo](https://github.com/hoanbui-kans/kanbox-momo-payment-gateway).
+
+== Upgrade Notice ==
+
+= 1.0.0 =
+New launch for payment plugin with e-wallet Momo Business.
