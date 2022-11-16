@@ -2,8 +2,8 @@
 Contributors: Kan Solution, CH Agency
 Tags: Momo Business, Momo payment, Momo Qr code
 Requires at least: 3.0
-Tested up to: 5.7.1
-Requires PHP: 7.0
+Tested up to: 6.0.2
+Requires PHP: 5.6
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html

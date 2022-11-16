@@ -1,9 +1,5 @@
 <?php
 /**
- * @package Kanbox Momo Payment GateWays
- * @version 1.0.0
- */
-/*
 * Plugin Name: Kanbox Momo Payment Gateway
 * Plugin URI: https://kansite.com.vn
 * Description: Simple and easy integration of <a href="https://business.momo.vn/">Momo</a> e-wallet payment with your Woocommerce e-commerce website, developed by <a href="https://kansite.com.vn/">Kan Solution</a> team.
@@ -13,7 +9,7 @@
 * Text Domain: kanbox
 * Domain Path: /languages
 * WC requires at least: 3.0
-* WC tested up to: 5.7.1
+* WC tested up to: 6.0.2
 * License:     GPLv2+
 */
 

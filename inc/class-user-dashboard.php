@@ -50,7 +50,7 @@ if(!class_exists('Kanbox_Momo_WooCommerce_User_Dashboard')) {
                             <tbody>
                                 <tr>
                                     <th><?php echo esc_attr_e('Id giao dịch', 'kanbox');?></th>
-                                    <td>#<mark><?php echo absint( $query_transaction['orderId'] );?></mark></td>
+                                    <td>#<mark><?php echo esc_html( $query_transaction['orderId'] );?></mark></td>
                                 </tr>
                                 <tr>
                                     <th><?php echo esc_attr_e( 'Trạng thái', 'kanbox' );?></th>

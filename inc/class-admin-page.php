@@ -146,7 +146,7 @@ if(!class_exists('Kanbox_Momo_Admin_Page')){
                         </div>
                         <div class="lh-1">
                             <h1 class="h6 mb-0 lh-1">Thanh toán Momo</h1>
-                            <small class="text-muted">Version: <?php echo $pluginInfo['Version']; ?></small>
+                            <small class="text-muted">Version: <?php echo esc_html( $pluginInfo['Version'] ); ?></small>
                         </div>
                     </div>
                 </div>
