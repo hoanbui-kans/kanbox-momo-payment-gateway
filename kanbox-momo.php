@@ -4,7 +4,7 @@
 * Plugin URI: https://kanbox.vn
 * Description: Simple and easy integration of <a href="https://business.momo.vn/">MoMo</a> e-wallet payment with your Woocommerce e-commerce website, developed by <a href="https://kansite.com.vn/">Kan Solution</a> team.
 * Author: Kan Solution
-* Version: 1.0.0
+* Version: 1.0.1
 * Author URI: https://zalo.me/0903888781
 * Text Domain: kanbox
 * Domain Path: /languages
