@@ -1,10 +1,9 @@
 <?php
-
-class Kanbox_Momo_Payment_Admin_field {
+class Kanbox_MoMo_Payment_Admin_field {
     private static $instance;
     public static function get_instance(){
         if(NULL === self::$instance){
-            self::$instance = new Kanbox_Momo_Payment_Admin_field();
+            self::$instance = new Kanbox_MoMo_Payment_Admin_field();
         }
         return self::$instance;
     }
@@ -18,13 +17,13 @@ class Kanbox_Momo_Payment_Admin_field {
     public function order_admin_custom_fields( $fields ) {
         global $the_order;
         $fields['momo_order_id'] = array(
-            'label' => __( 'Mã đơn thanh toán Momo', 'kanbox' ),
+            'label' => __( 'Mã đơn thanh toán MoMo', 'kanbox' ),
             'show'  => true,
             'wrapper_class' => 'form-field-wide',
         );
 
         $fields['momo_transid'] = array(
-            'label' => __( 'Mã giao dịch thanh toán Momo', 'kanbox' ),
+            'label' => __( 'Mã giao dịch thanh toán MoMo', 'kanbox' ),
             'show'  => true,
             'wrapper_class' => 'form-field-wide',
         );
@@ -42,4 +41,4 @@ class Kanbox_Momo_Payment_Admin_field {
     }
 }
 
-Kanbox_Momo_Payment_Admin_field::get_instance();
+Kanbox_MoMo_Payment_Admin_field::get_instance();

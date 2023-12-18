@@ -1,19 +1,16 @@
 <?php 
-/* Main class Handle Momo payment gateway */
-require(KANBOX_MOMO_DIR . "inc/common/helper.php");
-require(KANBOX_MOMO_DIR . "inc/class-admin-field.php");
+/* Main class Handle MoMo payment gateway */
+if(!class_exists('MoMo_Atm_Payment_GateWay_Controller')){
 
-if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
-
-    class Kanbox_Momo_Payment_GateWay_Controller extends WC_Payment_Gateway {
+    class MoMo_Atm_Payment_GateWay_Controller extends WC_Payment_Gateway {
             
         function __construct ()
         {
-            $this->id = 'momo'; // Payment gateway plugin ID
-            $this->icon = ''; // KANBOX_URL . 'assets/kanbox_momo_qr.svg' URL of the icon that will be displayed on checkout page near your gateway name
+            $this->id = 'momo-atm'; // Payment gateway plugin ID
+            $this->icon =  KANBOX_URL . 'assets/logo-atm.png'; // URL of the icon that will be displayed on checkout page near your gateway name
             $this->has_fields = true; // in case you need a custom credit card form
-            $this->method_title = __('Cổng thanh toán quét mã QR Momo', 'kanbox');
-            $this->method_description = __('Hỗ trợ thanh toán quét mã qua ứng dụng ví điện tử Momo', 'kanbox'); // will be displayed on the options page
+            $this->method_title = __('Cổng thanh toán MoMo cho thẻ nội địa (Atm)', 'kanbox');
+            $this->method_description = __('Hỗ trợ thanh toán quét mã qua ứng dụng ví điện tử MoMo', 'kanbox'); // will be displayed on the options page
             
             // Gateways can support subscriptions, refunds, saved payment methods,
             $supports = array(
@@ -41,6 +38,11 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
             $this->publishable_key = $this->testmode ? $this->get_option( 'test_publishable_key' ) : $this->get_option( 'publishable_key' );
             $this->partnerName = $this->get_option('partner_name');
             $this->storeId = $this->get_option('store_id');
+            $this->order_info = $this->get_option('order_info');
+            
+            if(!$this->order_info){
+                $this->order_info = __('Thanh toán đơn hàng: ', 'kanbox');
+            }
 
             // Initialize variables 
             $this->partnerCode = $this->testmode == 'yes' 
@@ -51,16 +53,14 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
                 ? $this->get_option('access_key_test') 
                 : $this->get_option('access_key');
     
-            $this->serectkey = $this->testmode == 'yes' 
-                ? $this->get_option('serect_key_test') 
-                : $this->get_option('serect_key');
+            $this->secretkey = $this->testmode == 'yes' 
+                ? $this->get_option('secret_key_test') 
+                : $this->get_option('secret_key');
     
             $endpoint = $this->testmode == 'yes' 
-                ? 'https://test-payment.momo.vn'
-                : 'https://payment.momo.vn';
+            ? $this->get_option('api_enpoint_test') 
+            : $this->get_option('api_enpoint');
 
-            
-            // API enpoint 
             // https://developers.momo.vn/v3/docs/payment/api/credit/onetime
             $this->create_endpoint = $endpoint . '/v2/gateway/api/create';
             $this->refund_endpoint = $endpoint . '/v2/gateway/api/refund';
@@ -71,50 +71,49 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
             $this->ipnUrl = self::get_momo_payment_ipn_url(); 
 
             // Webhook Redirect and IPN
-            add_action( 'woocommerce_api_momo_ipn', [$this, 'webhook_api_momo_ipn'] );    
-            add_action( 'woocommerce_api_momo_redirect_url', [$this, 'webhook_api_momo_redirect_url'] ); 
-
+            add_action( 'woocommerce_api_momo_atm_ipn', [$this, 'webhook_api_momo_atm_ipn'] );    
+            add_action( 'woocommerce_api_momo_atm_redirect_url', [$this, 'webhook_api_momo_atm_redirect_url'] ); 
             // Display Admin Order Id and Transaction Id
-            $this->admin_field = Kanbox_Momo_Payment_Admin_field::get_instance();
+            $this->admin_field = Kanbox_MoMo_Payment_Admin_field::get_instance();
         }
     
         // Ipn URL
         static function get_momo_payment_ipn_url(){
-            return get_home_url() . '/wc-api/momo_ipn';
+            return get_home_url() . '/wc-api/momo_atm_ipn';
         }
     
         // Redirect URL
         static function get_momo_payment_redirect_url(){
-            return get_home_url() . '/wc-api/momo_redirect_url';
+            return get_home_url() . '/wc-api/momo_atm_redirect_url';
         }
     
         /**
-        * Kanbox Momo Payment Gateway setting fields
+        * Kanbox MoMo Payment Gateway setting fields
         */
         public function init_form_fields()
         {
-            $this->form_fields = include( KANBOX_MOMO_DIR . 'inc/settings/momo-settings.php');
+            $this->form_fields = include( KANBOX_DIR . 'inc/settings/momo-atm-settings.php');
         }
     
         /**
-        * Custom Kanbox Momo Gateway payment method
+        * Custom Kanbox MoMo Gateway payment method
         */
         public function payment_fields() {
                 // ok, let's display some description before the payment form
             if ( $this->description ) {
                 // you can instructions for test mode, I mean test card numbers etc.
                 if ( $this->testmode ) {
-                    $this->description .= ' Chế độ thử nghiệm được bật, xin vui lòng sử dụng ứng dụng <a href="https://developers.momo.vn/v3/download/">Momo test</a> để trải nghiệm.';
+                    $this->description .= ' Chế độ thử nghiệm được bật, xin vui lòng sử dụng ứng dụng <a href="https://developers.momo.vn/v3/download/">MoMo test</a> để trải nghiệm.';
                     $this->description = trim( $this->description );
                 }
                 // display the description with <p> tags etc.
                 echo wpautop( wp_kses_post( $this->description ));
             } else {
                ?>
-               <p><?php echo esc_attr_e('Thanh toán trực tuyến bằng mã quét momo, xin vui lòng xử dụng app', 'kanbox');?> <a href="https://referral.momo.vn/ref/MDkwMzg4ODc4MSZndGJiMjAyMg==/referral_others"><?php echo esc_attr_e('ví điện tử Momo', 'kanbox');?></a> <?php echo esc_attr_e('để thanh toán miễn phí', 'kanbox');?></p>
+               <p><?php echo __('Thanh toán trực tuyến bằng mã quét momo, xin vui lòng xử dụng App', 'kanbox');?> <a href="https://referral.momo.vn/ref/MDkwMzg4ODc4MSZndGJiMjAyMg==/referral_others">
+                <?php echo __('ví điện tử MoMo', 'kanbox');?></a> <?php echo __('để thanh toán miễn phí', 'kanbox');?></p>
                <?php
             }
-        
         }
 
         /*
@@ -125,20 +124,20 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
             global $woocommerce;
             // we need it to get any order detailes
             $order = wc_get_order( $order_id );
-            $orderInfo = 'Thanh toán đơn hàng: ' . $order_id;
+            $orderInfo = $this->order_info . $order_id;
             $jsonResult = false;
             $extraData = $order_id;
-    
+
             if (!empty($order_id) && !$order->is_paid()) {
                 // Update Status to on-hold 
                 $order->update_status( 'on-hold', __('Đang tiến hành thanh toán', 'kanbox') );
                 $orderId = time().''; // Mã đơn hàng
                 $amount = $order->get_total();
                 $requestId = time(). $order_id;
-                $requestType = "captureWallet";
+                $requestType = "payWithATM";
                 //before sign HMAC SHA256 signature
                 $rawHash = "accessKey=" . $this->accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $this->ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $this->partnerCode . "&redirectUrl=" . $this->redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
-                $signature = hash_hmac("sha256", $rawHash, $this->serectkey);
+                $signature = hash_hmac("sha256", $rawHash, $this->secretkey);
                 $data = array(
                     'partnerCode' => $this->partnerCode,
                     'partnerName' => $this->partnerName,
@@ -161,26 +160,39 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
 
                 // Out if the request failed
                 if(!$result){
-                    return;
+                    wc_add_notice('Lỗi khởi tạo thanh toán, xin vui lòng kiểm tra lại cài đặt và thử lại sau.', 'error' );
+                    
+                    return array(
+                        'result' => 'success',
+                        'redirect' => $this->get_return_url( $order ),
+                    );  
                 }
 
                 $jsonResult = json_decode($result, true);  // Decode json result
 
-                if($jsonResult){
+                if($jsonResult && $jsonResult['resultCode'] == 0){
+                    // Empty cart
+                    WC()->cart->empty_cart();
+                    
                     return array(
                         'result' => 'success',
-                        'redirect' => esc_url( $jsonResult['payUrl'] ),
+                        'redirect' => $jsonResult['payUrl'],
                     );
+                   
                 }
+            } 
 
+            if($order->is_paid()){
+                wc_add_notice('Đơn hàng đã được thanh toán, xin vui lòng liên hệ quản trị viên để được hỗ trợ.', 'error' );
             } else {
-                if($order->is_paid()){
-                    wc_add_notice('Đơn hàng đã được thanh toán, xin vui lòng liên hệ quản trị viên để được hỗ trợ.', 'error' );
-                } else {
-                    wc_add_notice('Lỗi khởi tạo thanh toán, xin vui lòng kiểm tra lại cài đặt và thử lại sau.', 'error' );
-                }
-                return;
-            }
+                wc_add_notice('Lỗi khởi tạo thanh toán, xin vui lòng kiểm tra lại cài đặt và thử lại sau.', 'error' );
+            } 
+
+            // Redirect to the thank you 
+            return array(
+                'result' => 'success',
+                'redirect' => $this->get_return_url( $order ),
+            );  
         }
     
         public function process_refund( $order_id, $amount = NULL, $refund_reason = '' ){
@@ -211,7 +223,7 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
             "&description=" . $refund_reason . "&orderId=" . $orderId .
             "&partnerCode=" . $this->partnerCode . "&requestId=" . $requestId . "&transId=" . $transId;
 
-            $signature = hash_hmac("sha256", $rawHash, $this->serectkey);
+            $signature = hash_hmac("sha256", $rawHash, $this->secretkey);
 
             $data = array (
                 'partnerCode' => $this->partnerCode,
@@ -231,7 +243,7 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
             if (!$jsonResult || $jsonResult['resultCode'] != 0) {
                 return new WP_Error( 'wc-order' ,  $jsonResult['message'] );
             } else {
-                $order->update_status( 'refunded', __('Đã hoàn lại tiền bằng thanh toán Momo', 'kanbox') );
+                $order->update_status( 'refunded', __('Đã hoàn lại tiền bằng thanh toán MoMo', 'kanbox') );
                 return true;
             }
         }
@@ -245,8 +257,8 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
 
             //before sign HMAC SHA256 signature
             $rawHash = "accessKey=".$this->accessKey."&orderId=".$transId."&partnerCode=".$this->partnerCode."&requestId=".$requestId;
-            $signature = hash_hmac("sha256", $rawHash, $this->serectkey);
-            $requestType = "captureWallet";
+            $signature = hash_hmac("sha256", $rawHash, $this->secretkey);
+            $requestType = "payWithATM";
 
             $data = array(
                 'partnerCode' => $this->partnerCode,
@@ -265,7 +277,7 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
         /*
         * Redirect Webhook
         */
-        function webhook_api_momo_redirect_url() {
+        function webhook_api_momo_atm_redirect_url() {
         
             $wc_order_id = sanitize_text_field( $_GET['extraData'] );
             $order = wc_get_order( $wc_order_id );
@@ -290,16 +302,16 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
                     "&orderType=" . $orderType . "&partnerCode=" . $this->partnerCode . "&payType=" . $payType . "&requestId=" . $requestId . "&responseTime=" . $responseTime .
                     "&resultCode=" . $resultCode . "&transId=" . $transId;
     
-                $partnerSignature = hash_hmac("sha256", $rawHash, $this->serectkey);
+                $partnerSignature = hash_hmac("sha256", $rawHash, $this->secretkey);
     
                 // Update transaction id to dashboard
                 $this->admin_field->update_payment_meta_data($wc_order_id, $orderId, $transId);
                 
                 if ($m2signature == $partnerSignature && $order->get_status() != 'processing' && $resultCode == 0) {
-                    $order->update_status('processing', 'Đơn hàng đã thanh toán thành công và đang được xử lý');
+                    $order->update_status('processing', __('Đơn hàng đã thanh toán thành công và đang được xử lý'), 'kanbox');
                     wc_reduce_stock_levels($wc_order_id);
                 } else {
-                    $order->update_status('pending', 'Đơn hàng đã thanh toán không thành công và đã chuyển thành chờ thanh toán lại');
+                    $order->update_status('pending', __('Đơn hàng đã thanh toán không thành công và đã chuyển thành chờ thanh toán lại'), 'kanbox');
                 }
                 
                 header("Location:" . esc_url($this->get_return_url( $order )));
@@ -312,11 +324,11 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
         /*
         * IPN Webhook
         */
-        function webhook_api_momo_ipn(){
+        function webhook_api_momo_atm_ipn(){
 
             $jsonStr = file_get_contents("php://input"); //read the HTTP body.
-            $json = wp_json_encode($jsonStr);
-           
+            $json = json_encode($jsonStr);
+        
             if (!empty($json)) {
                 
                 $response = array();
@@ -343,14 +355,16 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
                         "&orderType=" . $orderType . "&partnerCode=" . $partnerCode . "&payType=" . $payType . "&requestId=" . $requestId . "&responseTime=" . $responseTime .
                         "&resultCode=" . $resultCode . "&transId=" . $transId;
     
-                    $partnerSignature = hash_hmac("sha256", $rawHash, $this->serectkey);
+                    $partnerSignature = hash_hmac("sha256", $rawHash, $this->secretkey);
     
                     // Update transaction id to dashboard
                     $this->admin_field->update_payment_meta_data($wc_order_id, $orderId, $transId);
 
                     if ($m2signature == $partnerSignature) {
-                        $order->update_status('processing', 'Đơn hàng đã thanh toán thành công và đang được xử lý');
-                        wc_reduce_stock_levels($wc_order_id);
+                        if($order->get_status() != 'processing' && $resultCode == 0) {
+                            $order->update_status('processing', 'Đơn hàng đã được xác nhận thanh toán thành công bằng IPN và đang được xử lý!');
+                            wc_reduce_stock_levels($wc_order_id);
+                        }
                         return wp_send_json( 1, 200, 1 );
                     } else {
                         $order->update_status('pending', 'Đơn hàng đã thanh toán không thành công và đã chuyển thành chờ thanh toán lại');
@@ -364,5 +378,6 @@ if(!class_exists('Kanbox_Momo_Payment_GateWay_Controller')){
                 return wp_send_json( 1, 204, 1 );
             }
         }
+
     }
 }
