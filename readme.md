@@ -1,3 +1,4 @@
+
 # Kanbox MoMo Payment Gateway
  Plugin thanh toán trực tuyến WooCommerce với MoMo
 
@@ -25,11 +26,11 @@ Với số lượng tăng lên hằng ngày của số người dùng ví điệ
 
 ### 1. Cài đặt Plugin tích hợp thanh toán với Woocommerce
 
-![](https://kanbox.vn/wp-content/uploads/2022/11/screenshot_1667983936.png)  Bạn chỉ cần tải file plugin:  [kanbox-momo-payment-gateway.zip](https://github.com/hoanbui-kans/kanbox-momo-payment-gateway/releases/download/MoMo_Woocmmerce/kanbox-momo-payment-gateway.zip)  phiên bản mới nhất và cài đặt trong mục Plugin của Dashboard Wordpress của bạn  ![](https://kanbox.vn/wp-content/uploads/2022/11/screenshot_1667984420.png)
+![](https://kanbox.vn/wp-content/uploads/2022/11/screenshot_1667983936.png)  Bạn chỉ cần tải file plugin:  [kanbox-momo-payment-gateway.zip](https://github.com/hoanbui-kans/kanbox-momo-payment-gateway/releases/download/MomoPayment/kanbox-momo-payment-gateway.zip)  phiên bản mới nhất và cài đặt trong mục Plugin của Dashboard Wordpress của bạn  ![](https://kanbox.vn/wp-content/uploads/2022/11/screenshot_1667984420.png)
 
 ### 2. Cấu hình thanh toán MoMo với WooCommerce
 
-Sau khi cài đặt Plugin thanh toán MoMo với WooCommerce, bạn sẽ thấy một Menu  **Thanh toán mới MoMo**  trên Dashboard của mình, hãy click vào  **Bật thanh toán với MoMo**  để tiến hành vào bảng quản trị thanh toán nhanh của Woocomerce  ![](https://kanbox.vn/wp-content/uploads/2022/11/screenshot_1667984741.png)  Tại bảng cài đặt thanh toán  **WooCommerce**  click chọn bật:  **Cổng thanh toán quét mã QR MoMo** – Thanh toán MoMo  ![](https://kanbox.vn/wp-content/uploads/2022/11/screenshot_1667984801.png)  Mô tả bảng cài đặt thanh toán MoMo cho Woocommerce với các chức năng sẵn có:
+Sau khi cài đặt Plugin thanh toán MoMo với WooCommerce, bạn sẽ thấy một Menu  **Thanh toán **  trên Dashboard Woocommerce của mình, **WooCommerce**  click chọn bật:  **Cổng thanh toán quét mã QR MoMo** – Thanh toán MoMo  ![](https://kanbox.vn/wp-content/uploads/2022/11/screenshot_1667984801.png)  Mô tả bảng cài đặt thanh toán MoMo cho Woocommerce với các chức năng sẵn có:
 
 -   Bật tích hợp thanh toán MoMo với Woocommerce: Bạn cần điền đầy đủ thông tin của tài khoản thực tế, hãy bật chế độ thử nghiệm nếu bạn chưa sẵn sàng.
 -   Bật tính năng hoàn tiền bằng ví điện tử MoMo dành cho cửa hàng: tính năng này cần yêu cầu hoạt động của API hoàn tiền của MoMo Business.
