@@ -35,11 +35,13 @@ if(!class_exists('Kanbox_MoMo_WooCommerce_User_Dashboard')) {
                                     <th><?php echo __('Thông tin thanh toán', 'kanbox');?></th>
                                     <td><?php echo __('Bạn chưa thanh toán cho đơn hàng này', 'kanbox',); ?></td>
                                 </tr>
-                                <?php if( !$is_paid ) : ?>   
+                                <?php if( !$is_paid && !$payment['error']) : ?>   
                                 <tr>
                                     <th><?php echo __('Thanh toán lại đơn hàng', 'kanbox');?></th>
                                     <td>
-                                        <a href="<?php echo esc_url($payment['redirect']);?>" class="checkout-button button alt wc-forward wp-element-button">Thanh toán bằng MoMo</a>
+                                        <a href="<?php echo esc_url($payment['redirect']);?>" class="checkout-button button alt wc-forward wp-element-button">
+                                            <?php esc_attr_e('Thanh toán bằng MoMo', 'kanbox');?>
+                                        </a>
                                     </td>
                                 </tr>
                                 <?php endif; ?>

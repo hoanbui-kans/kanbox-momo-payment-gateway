@@ -9,7 +9,7 @@
 * Text Domain: kanbox
 * Domain Path: /languages
 * WC requires at least: 3.0
-* WC tested up to: 6.0.2
+* WC tested up to: 8.4.0
 * License:     GPLv2+
 */
 

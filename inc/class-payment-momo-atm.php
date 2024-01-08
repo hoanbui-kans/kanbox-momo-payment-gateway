@@ -73,6 +73,10 @@ if(!class_exists('MoMo_Atm_Payment_GateWay_Controller')){
             // Webhook Redirect and IPN
             add_action( 'woocommerce_api_momo_atm_ipn', [$this, 'webhook_api_momo_atm_ipn'] );    
             add_action( 'woocommerce_api_momo_atm_redirect_url', [$this, 'webhook_api_momo_atm_redirect_url'] ); 
+
+            // Disabled avaiable payment method
+            add_filter( 'woocommerce_available_payment_gateways', [$this, 'turn_off_payment_gateway'] );
+
             // Display Admin Order Id and Transaction Id
             $this->admin_field = Kanbox_MoMo_Payment_Admin_field::get_instance();
         }
@@ -157,40 +161,46 @@ if(!class_exists('MoMo_Atm_Payment_GateWay_Controller')){
                 
                 // Send request to serve
                 $result = execPostRequest($this->create_endpoint, wp_json_encode($data));
-
                 // Out if the request failed
                 if(!$result){
-                    wc_add_notice('Lỗi khởi tạo thanh toán, xin vui lòng kiểm tra lại cài đặt và thử lại sau.', 'error' );
-                    
+                    wc_add_notice(__('Lỗi khởi tạo thanh toán, xin vui lòng kiểm tra lại cài đặt và thử lại sau.', 'kanbox'), 'error' );
                     return array(
                         'result' => 'success',
+                        'error' => true,
+                        'message' => __('Lỗi khởi tạo thanh toán, xin vui lòng kiểm tra lại cài đặt và thử lại sau.', 'kanbox'),
                         'redirect' => $this->get_return_url( $order ),
                     );  
                 }
 
-                $jsonResult = json_decode($result, true);  // Decode json result
+                $jsonResult = json_decode($result, true);
 
                 if($jsonResult && $jsonResult['resultCode'] == 0){
-                    // Empty cart
                     WC()->cart->empty_cart();
-                    
                     return array(
                         'result' => 'success',
                         'redirect' => $jsonResult['payUrl'],
                     );
-                   
+                } else {
+                    wc_add_notice($jsonResult['message'], 'error' );
+                    return array(
+                        'result' => 'success',
+                        'error' => true,
+                        'message' => $jsonResult['message'],
+                        'redirect' => $this->get_return_url( $order ),
+                    );  
                 }
             } 
-
+            
             if($order->is_paid()){
-                wc_add_notice('Đơn hàng đã được thanh toán, xin vui lòng liên hệ quản trị viên để được hỗ trợ.', 'error' );
+                wc_add_notice(__('Đơn hàng đã được thanh toán, xin vui lòng liên hệ quản trị viên để được hỗ trợ.', 'kanbox'), 'error' );
             } else {
-                wc_add_notice('Lỗi khởi tạo thanh toán, xin vui lòng kiểm tra lại cài đặt và thử lại sau.', 'error' );
-            } 
+                wc_add_notice(__('Lỗi khởi tạo thanh toán, xin vui lòng kiểm tra lại cài đặt và thử lại sau.', 'kanbox'), 'error' );
+            }   
 
-            // Redirect to the thank you 
+            // Redirect to the thank you page
             return array(
                 'result' => 'success',
+                'error' => true,
                 'redirect' => $this->get_return_url( $order ),
             );  
         }
@@ -377,6 +387,19 @@ if(!class_exists('MoMo_Atm_Payment_GateWay_Controller')){
             } else {
                 return wp_send_json( 1, 204, 1 );
             }
+        }
+
+        /*
+        * Validate Amount
+        */
+        function turn_off_payment_gateway( $available_gateways ) {
+            global $woocommerce;
+            $order_total = (float) $woocommerce->cart->get_cart_contents_total();
+            // Disable payment gateway if order/cart total is less than 1000 and more than 50.000.000
+            if ( ($order_total > 50000000) || ($order_total < 1000) ) {
+                unset( $available_gateways[ $this->id ] );
+            }
+            return $available_gateways;
         }
 
     }
