@@ -29,7 +29,7 @@ return array(
         'label'         => __('Would you like us to arrange transportation from the airport to your starting hotel?'),
         'required'    => true,
         'options'     => array(
-                        'vi' => __('VietNamese'),
+                        'vi' => __('Vietnamese'),
                         'en' => __('English')
         ),
         'default' => 'vi'
