@@ -1,6 +1,6 @@
 
 # Kanbox MoMo Payment Gateway
- Plugin thanh toán trực tuyến WooCommerce với MoMo
+ Plugin thanh toán trực tuyến WooCommerce với Cổng thanh toán MoMo (ATM, Credit Card, Qr code)
 
 
 ## Ví MoMo là gì?
