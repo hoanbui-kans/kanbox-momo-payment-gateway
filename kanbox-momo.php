@@ -84,7 +84,7 @@ if(!class_exists('Kanbox_MoMo_Payment_GateWay')){
                     require ( KANBOX_DIR . 'inc/class-payment-momo-atm.php' );
                     require ( KANBOX_DIR . 'inc/class-payment-momo-credit.php' );
                     
-                    require (KANBOX_DIR . 'inc/class-user-dashboard.php' );
+                    require ( KANBOX_DIR . 'inc/class-user-dashboard.php' );
 
                     add_filter( 'woocommerce_payment_gateways', function ( $gateways ) {
                         $gateways[] = 'MoMo_Qr_Payment_GateWay_Controller';

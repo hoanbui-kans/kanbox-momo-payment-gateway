@@ -39,7 +39,9 @@ if(!class_exists('MoMo_Qr_Payment_GateWay_Controller')){
             $this->partnerName = $this->get_option('partner_name');
             $this->storeId = $this->get_option('store_id');
             $this->order_info = $this->get_option('order_info');
-            
+            $this->lang = $this->get_option('lang');
+            $this->lang = $this->lang ? $this->lang : 'vi';
+
             if(!$this->order_info){
                 $this->order_info = __('Thanh toán đơn hàng: ', 'kanbox');
             }
@@ -114,9 +116,9 @@ if(!class_exists('MoMo_Qr_Payment_GateWay_Controller')){
                 echo wpautop( wp_kses_post( $this->description ));
             } else {
                ?>
-               <p><?php echo __('Thanh toán trực tuyến bằng mã quét momo, xin vui lòng xử dụng app', 'kanbox');?> 
-               <a href="https://referral.momo.vn/ref/MDkwMzg4ODc4MSZndGJiMjAyMg==/referral_others"><?php echo __('ví điện tử MoMo', 'kanbox');?></a> 
-               <?php echo __('để thanh toán miễn phí', 'kanbox');?></p>
+               <p><?php esc_attr_e('Thanh toán trực tuyến bằng mã quét momo, xin vui lòng xử dụng app', 'kanbox');?> 
+               <a href="https://referral.momo.vn/ref/MDkwMzg4ODc4MSZndGJiMjAyMg==/referral_others"><?php esc_attr_e('ví điện tử MoMo', 'kanbox');?></a> 
+               <?php esc_attr_e('để thanh toán miễn phí', 'kanbox');?></p>
                <?php
             }
         }
@@ -153,7 +155,7 @@ if(!class_exists('MoMo_Qr_Payment_GateWay_Controller')){
                     'orderInfo' => $orderInfo,
                     'redirectUrl' => $this->redirectUrl,
                     'ipnUrl' => $this->ipnUrl,
-                    'lang' => 'vi',
+                    'lang' => $this->lang,
                     'extraData' => $extraData,
                     'accessKey' => $this->accessKey,
                     'requestType' => $requestType,
@@ -242,7 +244,7 @@ if(!class_exists('MoMo_Qr_Payment_GateWay_Controller')){
                 'requestId' => $requestId,
                 'amount' => $amount,
                 'transId' => $transId,
-                'lang' => 'vi',
+                'lang' => $this->lang,
                 'description' => $refund_reason,
                 'signature' => $signature,
             );
@@ -277,7 +279,7 @@ if(!class_exists('MoMo_Qr_Payment_GateWay_Controller')){
                 'orderId' => $transId,
                 'requestType' => $requestType,
                 'signature' => $signature,
-                'lang' => 'vi'
+                'lang' => $this->lang
             );
             $jsonResult = [];
             $result = execPostRequest($this->query_endpoint, wp_json_encode($data));
@@ -394,9 +396,10 @@ if(!class_exists('MoMo_Qr_Payment_GateWay_Controller')){
         */
         function turn_off_payment_gateway( $available_gateways ) {
             global $woocommerce;
-            $order_total = (float) $woocommerce->cart->get_cart_contents_total();
+            if ( ! WC()->cart ) return $available_gateways;
+            $order_total = (float) WC()->cart->get_cart_contents_total();
             // Disable payment gateway if order/cart total is less than 1000 and more than 50.000.000
-            if ( ($order_total > 50000000) || ($order_total < 1000) ) {
+            if ( ($order_total > 50000000) || ($order_total < 1000) && isset( $available_gateways[$this->id] ) ) {
                 unset( $available_gateways[ $this->id ] );
             }
             return $available_gateways;

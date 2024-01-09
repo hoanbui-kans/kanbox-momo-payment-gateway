@@ -1,6 +1,5 @@
 <?php
 /* Main class Handle MoMo payment gateway */
-
 if(!class_exists('Kanbox_MoMo_WooCommerce_User_Dashboard')) {
     class Kanbox_MoMo_WooCommerce_User_Dashboard extends WC_Payment_Gateway {
         function __construct(){
@@ -28,16 +27,16 @@ if(!class_exists('Kanbox_MoMo_WooCommerce_User_Dashboard')) {
                 if( !$is_paid && $order->get_status() != 'refunded' ):
                     $payment = $controller->process_payment($order->get_id());
                 ?>
-                    <h2><?php echo __('Thanh toán', 'kanbox');?></h2>
+                    <h2><?php esc_attr_e('Thanh toán', 'kanbox');?></h2>
                     <table class="woocommerce-table shop_table payment_info">
                         <tbody>
                                 <tr>
-                                    <th><?php echo __('Thông tin thanh toán', 'kanbox');?></th>
-                                    <td><?php echo __('Bạn chưa thanh toán cho đơn hàng này', 'kanbox',); ?></td>
+                                    <th><?php esc_attr_e('Thông tin thanh toán', 'kanbox');?></th>
+                                    <td><?php esc_attr_e('Bạn chưa thanh toán cho đơn hàng này', 'kanbox',); ?></td>
                                 </tr>
                                 <?php if( !$is_paid && !$payment['error']) : ?>   
                                 <tr>
-                                    <th><?php echo __('Thanh toán lại đơn hàng', 'kanbox');?></th>
+                                    <th><?php esc_attr_e('Thanh toán lại đơn hàng', 'kanbox');?></th>
                                     <td>
                                         <a href="<?php echo esc_url($payment['redirect']);?>" class="checkout-button button alt wc-forward wp-element-button">
                                             <?php esc_attr_e('Thanh toán bằng MoMo', 'kanbox');?>
@@ -58,19 +57,18 @@ if(!class_exists('Kanbox_MoMo_WooCommerce_User_Dashboard')) {
                         $query_transaction = $controller->query_transaction($order->get_id()); 
                     }
                     
-                    if($query_transaction): 
-                    ?>
-                            <h2><?php echo __('Thông tin thanh toán', 'kanbox');?></h2>
+                    if($query_transaction): ?>
+                            <h2><?php esc_attr_e('Thông tin thanh toán', 'kanbox');?></h2>
                             <table class="woocommerce-table shop_table payment_info">
                                 <tbody>
                                     <tr>
-                                        <th><?php echo __('ID giao dịch', 'kanbox');?></th>
+                                        <th><?php esc_attr_e('ID giao dịch', 'kanbox');?></th>
                                         <td>#<mark><?php echo esc_html( $query_transaction['orderId'] );?></mark></td>
                                     </tr>
                                     <tr>
-                                        <th><?php echo __( 'Trạng thái', 'kanbox' );?></th>
+                                        <th><?php esc_attr_e( 'Trạng thái', 'kanbox' );?></th>
                                         <td>
-                                            <?php echo esc_html( $query_transaction['message'] , 'kanbox' );?>
+                                            <?php esc_html( $query_transaction['message'] , 'kanbox' );?>
                                         </td>
                                     </tr>
                                 </tbody>

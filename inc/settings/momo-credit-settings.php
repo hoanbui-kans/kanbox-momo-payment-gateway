@@ -24,6 +24,16 @@ return array(
         'description' => __('Thêm mô tả ngắn để mô tả sơ lược tính năng thanh toán bằng ví điện tử khi mua hàng.', 'kanbox'),
         'default'     => __('Thanh toán bằng thẻ Visa/Master/JCB bạn qua cổng thanh toán trực tuyến MoMo.', 'kanbox'),
     ),
+    'lang'           => array(
+        'type'          => 'select',
+        'label'         => __('Would you like us to arrange transportation from the airport to your starting hotel?'),
+        'required'    => true,
+        'options'     => array(
+                        'vi' => __('VietNamese'),
+                        'en' => __('English')
+        ),
+        'default' => 'vi'
+    ),
     'enabled_refund' => array(
         'title'       => 'Tính năng hoàn tiền',
         'label'       => __('Bật tính tính năng hoàn tiền trên đơn hàng', 'kanbox'),
