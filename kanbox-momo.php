@@ -13,7 +13,7 @@
 * License:     GPLv2+
 */
 
-require ('plugin-update/plugin-update-checker.php');
+require ('inc/load-v5p3.php');
 
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
@@ -81,28 +81,28 @@ if(!class_exists('Kanbox_MoMo_Payment_GateWay')){
 
                 if('VND' == get_woocommerce_currency()){
                     
-                    require ('inc/common/helper.php');
-                    require ("inc/class-admin-field.php");
+                    require ( KANBOX_DIR . 'inc/common/helper.php');
+                    require ( KANBOX_DIR . "inc/class-admin-field.php");
                     
-                    require ('inc/class-payment-momo-qr.php' );
-                    require ('inc/class-payment-momo-atm.php' );
-                    require ('inc/class-payment-momo-credit.php' );
+                    require ( KANBOX_DIR . 'inc/class-payment-momo-qr.php' );
+                    require ( KANBOX_DIR . 'inc/class-payment-momo-atm.php' );
+                    require ( KANBOX_DIR . 'inc/class-payment-momo-credit.php' );
                     
-                    require ('inc/class-user-dashboard.php' );
+                    require ( KANBOX_DIR . 'inc/class-user-dashboard.php' );
 
                     $myUpdateChecker = PucFactory::buildUpdateChecker(
-                        'https://github.com/hoanbui-kans/kanbox-momo-payment-gateway',
+                        'https://tail.kanbox.vn/wp-json/resource/update-check/kanbox-momo-payment-gateway',
                         __FILE__,
                         'unique-plugin-or-theme-slug'
                     );
 
                     //Here's how you can add query arguments to the URL.
                     function addSecretKey2($query){
-                        $query['secret'] = 'foo';
+                        $query['secret'] = '12577cc88e30b6f63865524c6cde64ce';
                         return $query;
                     }
 
-                    $myUpdateChecker->setAuthentication('addSecretKey2');
+                    $myUpdateChecker->addQueryArgFilter('addSecretKey2');
 
                     add_filter( 'woocommerce_payment_gateways', function ( $gateways ) {
                         $gateways[] = 'MoMo_Qr_Payment_GateWay_Controller';
