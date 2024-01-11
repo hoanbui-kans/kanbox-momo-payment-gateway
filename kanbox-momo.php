@@ -114,7 +114,7 @@ if(!class_exists('Kanbox_MoMo_Payment_GateWay')){
         public function init_update()
         {
             $update = PucFactory::buildUpdateChecker(
-                'https://tail.kanbox.vn/wp-json/resource/update-check/kanbox-momo-payment-gateway',
+                'https://kanbox.vn/wp-json/resource/update-check/kanbox-momo-payment-gateway',
                 __FILE__,
                 'kanbox-momo-payment-gateway'
             );
