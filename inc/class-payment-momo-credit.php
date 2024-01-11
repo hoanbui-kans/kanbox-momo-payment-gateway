@@ -82,7 +82,7 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
             // Display Admin Order Id and Transaction Id
             $this->admin_field = Kanbox_MoMo_Payment_Admin_field::get_instance();
         }
-    
+
         // Ipn URL
         static function get_momo_payment_ipn_url(){
             return get_home_url() . '/wc-api/momo_credit_ipn';

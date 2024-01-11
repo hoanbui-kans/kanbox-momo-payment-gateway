@@ -1,8 +1,8 @@
 <?php
 /**
 * Plugin Name: Kanbox MoMo Payment Gateway
-* Plugin URI: https://kanbox.vn
-* Description: Simple and easy integration of <a href="https://business.momo.vn/">MoMo</a> e-wallet payment with your Woocommerce e-commerce website, developed by <a href="https://kansite.com.vn/">Kan Solution</a> team.
+* Plugin URI: https://kanbox.vn/resource/kanbox-momo-payment-gateway/
+* Description: Simple and easy integration of MoMo payment gateways with your Woocommerce website.
 * Author: Kan Solution
 * Version: 1.0.1
 * Author URI: https://zalo.me/0903888781
@@ -13,14 +13,18 @@
 * License:     GPLv2+
 */
 
+require ('plugin-update/plugin-update-checker.php');
+
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'KANBOX_DIR', plugin_dir_path( __FILE__ ) );
 define( 'KANBOX_URL', plugins_url( '/', __FILE__ ) );
+define( 'KANBOX_DIR', plugin_dir_path( __FILE__ ) );
 
+                    
 /**
  * The main class of the plugin
  *
@@ -77,14 +81,28 @@ if(!class_exists('Kanbox_MoMo_Payment_GateWay')){
 
                 if('VND' == get_woocommerce_currency()){
                     
-                    require ( KANBOX_DIR . "inc/common/helper.php");
-                    require ( KANBOX_DIR . "inc/class-admin-field.php");
+                    require ('inc/common/helper.php');
+                    require ("inc/class-admin-field.php");
                     
-                    require ( KANBOX_DIR . 'inc/class-payment-momo-qr.php' );
-                    require ( KANBOX_DIR . 'inc/class-payment-momo-atm.php' );
-                    require ( KANBOX_DIR . 'inc/class-payment-momo-credit.php' );
+                    require ('inc/class-payment-momo-qr.php' );
+                    require ('inc/class-payment-momo-atm.php' );
+                    require ('inc/class-payment-momo-credit.php' );
                     
-                    require ( KANBOX_DIR . 'inc/class-user-dashboard.php' );
+                    require ('inc/class-user-dashboard.php' );
+
+                    $myUpdateChecker = PucFactory::buildUpdateChecker(
+                        'https://github.com/hoanbui-kans/kanbox-momo-payment-gateway',
+                        __FILE__,
+                        'unique-plugin-or-theme-slug'
+                    );
+
+                    //Here's how you can add query arguments to the URL.
+                    function addSecretKey2($query){
+                        $query['secret'] = 'foo';
+                        return $query;
+                    }
+
+                    $myUpdateChecker->setAuthentication('addSecretKey2');
 
                     add_filter( 'woocommerce_payment_gateways', function ( $gateways ) {
                         $gateways[] = 'MoMo_Qr_Payment_GateWay_Controller';

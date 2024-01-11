@@ -293,7 +293,7 @@ if(!class_exists('MoMo_Atm_Payment_GateWay_Controller')){
         
             $wc_order_id = sanitize_text_field( $_GET['extraData'] );
             $order = wc_get_order( $wc_order_id );
-
+            var_dump($_GET);
             try {
                 $partnerCode = sanitize_text_field( $_GET["partnerCode"] );
                 $orderId = sanitize_text_field( $_GET["orderId"] );
