@@ -40,7 +40,6 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
             $this->storeId = $this->get_option('store_id');
             $this->order_info = $this->get_option('order_info');
             $this->lang = $this->get_option('lang');
-            $this->lang = $this->lang ? $this->lang : 'vi';
 
             if(!$this->order_info){
                 $this->order_info = __('Thanh toán đơn hàng: ', 'kanbox');
