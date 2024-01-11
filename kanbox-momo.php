@@ -4,7 +4,7 @@
 * Plugin URI: https://kanbox.vn/resource/kanbox-momo-payment-gateway/
 * Description: Simple and easy integration of MoMo payment gateways with your Woocommerce website.
 * Author: Kan Solution
-* Version: 1.0.1
+* Version: 1.0.2
 * Author URI: https://zalo.me/0903888781
 * Text Domain: kanbox
 * Domain Path: /languages
@@ -34,9 +34,9 @@ define( 'KANBOX_DIR', plugin_dir_path( __FILE__ ) );
 
 if(!class_exists('Kanbox_MoMo_Payment_GateWay')){
     class Kanbox_MoMo_Payment_GateWay {
-        function __construct()
-        {
+        function __construct() {
             add_action( 'init', array( $this, 'init' ) );
+            
         }
         
         function notice_if_not_woocommerce() 
@@ -70,13 +70,21 @@ if(!class_exists('Kanbox_MoMo_Payment_GateWay')){
             if ( class_exists( 'WooCommerce' ) ) {
                 // Run this plugin normally if WooCommerce is active
                 $this->main();
+                $this->init_update();
             } else {
                 // Throw a notice if WooCommerce is NOT active
                 add_action( 'admin_notices', array( $this, 'notice_if_not_woocommerce' ) );
             }
         }
 
-        public function main(){
+        function addSecretKey($query)
+        {
+            $query['secret'] = '12577cc88e30b6f63865524c6cde64ce';
+            return $query;
+        }
+
+        public function main()
+        {
             if( class_exists('WC_Payment_Gateway')) {
 
                 if('VND' == get_woocommerce_currency()){
@@ -90,20 +98,6 @@ if(!class_exists('Kanbox_MoMo_Payment_GateWay')){
                     
                     require ( KANBOX_DIR . 'inc/class-user-dashboard.php' );
 
-                    $myUpdateChecker = PucFactory::buildUpdateChecker(
-                        'https://tail.kanbox.vn/wp-json/resource/update-check/kanbox-momo-payment-gateway',
-                        __FILE__,
-                        'unique-plugin-or-theme-slug'
-                    );
-
-                    //Here's how you can add query arguments to the URL.
-                    function addSecretKey2($query){
-                        $query['secret'] = '12577cc88e30b6f63865524c6cde64ce';
-                        return $query;
-                    }
-
-                    $myUpdateChecker->addQueryArgFilter('addSecretKey2');
-
                     add_filter( 'woocommerce_payment_gateways', function ( $gateways ) {
                         $gateways[] = 'MoMo_Qr_Payment_GateWay_Controller';
                         $gateways[] = 'MoMo_Atm_Payment_GateWay_Controller';
@@ -116,6 +110,17 @@ if(!class_exists('Kanbox_MoMo_Payment_GateWay')){
                 }
             }
         }
+
+        public function init_update()
+        {
+            $update = PucFactory::buildUpdateChecker(
+                'https://tail.kanbox.vn/wp-json/resource/update-check/kanbox-momo-payment-gateway',
+                __FILE__,
+                'kanbox-momo-payment-gateway'
+            );
+            $update->addQueryArgFilter([$this, 'addSecretKey']);
+        }
+
     }
 
     new Kanbox_MoMo_Payment_GateWay();
