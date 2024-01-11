@@ -3,10 +3,10 @@ require ('load-v5p3.php');
 
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
-$myUpdateChecker = PucFactory::buildUpdateChecker(
+$update = PucFactory::buildUpdateChecker(
     'https://tail.kanbox.vn/wp-json/resource/update-check/kanbox-momo-payment-gateway',
     __FILE__,
-    'unique-plugin-or-theme-slug'
+    'kanbox-momo-payment-gateway'
 );
 
 //Here's how you can add query arguments to the URL.
@@ -15,4 +15,4 @@ function addSecretKey2($query){
     return $query;
 }
 
-$myUpdateChecker->addQueryArgFilter('addSecretKey2');
+$update->addQueryArgFilter('addSecretKey2');
