@@ -1,7 +1,9 @@
 <?php
 /* Main class Handle MoMo payment gateway */
 if(!class_exists('Kanbox_MoMo_WooCommerce_User_Dashboard')) {
+    
     class Kanbox_MoMo_WooCommerce_User_Dashboard extends WC_Payment_Gateway {
+
         function __construct(){
             add_action( 'woocommerce_order_details_after_order_table', [$this, 'kanbox_momo_payment_dashboard_section'] );
         }
@@ -63,12 +65,33 @@ if(!class_exists('Kanbox_MoMo_WooCommerce_User_Dashboard')) {
                                 <tbody>
                                     <tr>
                                         <th><?php esc_attr_e('ID giao dịch', 'kanbox');?></th>
-                                        <td>#<mark><?php echo esc_html( $query_transaction['orderId'] );?></mark></td>
+                                        <td><mark><?php echo esc_html( $query_transaction['orderId'] );?></mark></td>
+                                    </tr>
+                                    <tr>
+                                        <th><?php esc_attr_e('Mã thanh toán', 'kanbox');?></th>
+                                        <td><mark><?php echo esc_html( $query_transaction['transId'] );?></mark></td>
                                     </tr>
                                     <tr>
                                         <th><?php esc_attr_e( 'Trạng thái', 'kanbox' );?></th>
                                         <td>
-                                            <?php esc_html( $query_transaction['message'] , 'kanbox' );?>
+                                            <mark>
+                                                <?php echo esc_html( $query_transaction['message'] , 'kanbox' );?>
+                                            </mark>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><?php esc_attr_e( 'Tổng thanh toán', 'kanbox' );?></th>
+                                        <td>
+                                            <?php echo esc_html( $query_transaction['amount'] , 'kanbox' );?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><?php esc_attr_e( 'Thời gian', 'kanbox' );?></th>
+                                        <td>
+                                            <?php 
+                                            $phpDate = $query_transaction['responseTime'] / 1000;
+                                            $formattedDate = date('d/m/Y h:i:s', $phpDate);
+                                            echo esc_html( $formattedDate , 'kanbox' );?>
                                         </td>
                                     </tr>
                                 </tbody>

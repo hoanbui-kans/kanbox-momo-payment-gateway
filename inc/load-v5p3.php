@@ -1,5 +1,4 @@
 <?php
-
 namespace YahnisElsts\PluginUpdateChecker\v5p3;
 
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory as MajorFactory;

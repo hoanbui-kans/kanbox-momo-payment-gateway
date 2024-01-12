@@ -84,12 +84,12 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
 
         // Ipn URL
         static function get_momo_payment_ipn_url(){
-            return get_home_url() . '/wc-api/momo_credit_ipn';
+            return untrailingslashit( get_home_url() ) . '/wc-api/momo_credit_ipn';
         }
     
         // Redirect URL
         static function get_momo_payment_redirect_url(){
-            return get_home_url() . '/wc-api/momo_credit_redirect_url';
+            return untrailingslashit( get_home_url() ). '/wc-api/momo_credit_redirect_url';
         }
     
         /**
@@ -293,19 +293,20 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
             $order = wc_get_order( $wc_order_id );
 
             try {
-                $partnerCode = sanitize_text_field( $_GET["partnerCode"] );
-                $orderId = sanitize_text_field( $_GET["orderId"] );
-                $requestId = sanitize_text_field( $_GET["requestId"] );
-                $amount = sanitize_text_field( $_GET["amount"] );	
-                $orderInfo = sanitize_text_field( $_GET["orderInfo"] );
-                $orderType = sanitize_text_field( $_GET["orderType"] );
-                $transId = sanitize_text_field( $_GET["transId"] );
-                $resultCode = sanitize_text_field( $_GET["resultCode"] );
-                $message = sanitize_text_field( $_GET["message"] );
-                $payType = sanitize_text_field( $_GET["payType"] );
-                $responseTime = sanitize_text_field( $_GET["responseTime"] );
-                $extraData = sanitize_text_field( $_GET["extraData"] );
-                $m2signature = sanitize_text_field( $_GET["signature"] ); //MoMo signature
+                $payment = rest_sanitize_object( $_GET );
+                $partnerCode = sanitize_text_field( $payment["partnerCode"] );
+                $orderId = sanitize_text_field( $payment["orderId"] );
+                $requestId = sanitize_text_field( $payment["requestId"] );
+                $amount = sanitize_text_field( $payment["amount"] );	
+                $orderInfo = sanitize_text_field( $payment["orderInfo"] );
+                $orderType = sanitize_text_field( $payment["orderType"] );
+                $transId = sanitize_text_field( $payment["transId"] );
+                $resultCode = sanitize_text_field( $payment["resultCode"] );
+                $message = sanitize_text_field( $payment["message"] );
+                $payType = sanitize_text_field( $payment["payType"] );
+                $responseTime = sanitize_text_field( $payment["responseTime"] );
+                $extraData = sanitize_text_field( $payment["extraData"] );
+                $m2signature = sanitize_text_field( $payment["signature"] ); //MoMo signature
                 
                 // Checksum
                 $rawHash = "accessKey=" . $this->accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&message=" . $message . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo .
@@ -315,13 +316,13 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
                 $partnerSignature = hash_hmac("sha256", $rawHash, $this->secretkey);
     
                 // Update transaction id to dashboard
-                $this->admin_field->update_payment_meta_data($wc_order_id, $orderId, $transId);
+                $this->admin_field->update_payment_meta_data($wc_order_id, $payment);
                 
-                if ($m2signature == $partnerSignature && $order->get_status() != 'processing' && $resultCode == 0) {
-                    $order->update_status('processing', __('Đơn hàng đã thanh toán thành công và đang được xử lý'), 'kanbox');
+                if ($m2signature == $partnerSignature && $resultCode == 0) {
+                    $order->update_status('processing', __('Đơn hàng đã thanh toán thành công và đang được xử lý.'), 'kanbox');
                     wc_reduce_stock_levels($wc_order_id);
                 } else {
-                    $order->update_status('pending', __('Đơn hàng đã thanh toán không thành công và đã chuyển thành chờ thanh toán lại'), 'kanbox');
+                    $order->update_status('pending', __('Đơn hàng đã thanh toán không thành công và đã chuyển thành chờ thanh toán lại.'), 'kanbox');
                 }
                 
                 header("Location:" . esc_url($this->get_return_url( $order )));
