@@ -1,5 +1,4 @@
 <?php 
-/* Version 1.0.0 For free user */
 /* Add payment settings with MoMo enterprise e-wallet, deploy 2 real and test environments */
 
 return array(
@@ -119,5 +118,27 @@ return array(
         'description' => __('Được cấp bởi MoMo Business - môi trường thử nghiệm', 'kanbox'),
         'desc_tip'    => true,
         'default'     => 'https://test-payment.momo.vn'
+    ),
+    'tracking_order' => array(
+        'title'       => __('Phân nhóm đơn hàng', 'kanbox'),
+        'label'       => __('Phân nhóm đơn hàng', 'kanbox'),
+        'type'        => 'checkbox',
+        'description' => __('Phân nhóm đơn hàng cho các hoạt động vận hành sau này. <a target="_blank" href="https://developers.momo.vn/v3/vi/docs/payment/api/wallet/pay-with-token">Hướng dẫn sử dụng</a>', 'kanbox'),
+        'default'     => 'no',
+        'desc_tip'    => false,
+    ),
+    'session_key' => array(
+        'title'       => __('Session tracking key', 'kanbox'),
+        'type'        => 'text',
+        'description' => __('Định nghĩa Session key cho giá trị quy định phân nhóm đơn hàng', 'kanbox'),
+        'desc_tip'    => true,
+        'default'     => 'location'
+    ),
+    'order_group_ids' 		=> array(
+        'title'    => __( 'Tracking order group id', 'kanbox' ),
+        'desc' 	   => __( 'Cặp khóa key - value với Session key và OrderGroupid.', 'kanbox' ),
+        'type'     => 'json',
+        'default'  => '',
+        'desc_tip' => true,
     )
 );

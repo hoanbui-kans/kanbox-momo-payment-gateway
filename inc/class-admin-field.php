@@ -53,16 +53,13 @@ if(!class_exists('Kanbox_MoMo_Payment_Admin_field')) {
         }
     
         public function update_payment_meta_data($order_id, $payment_data){
-    
             if(!$order_id) return false;
-    
             $momo_order_id = $payment_data['orderId'];
             $momo_transid = $payment_data['transId'];
             $momo_type = $payment_data['payType'];
             $momo_total = $payment_data['amount'];
             $momo_message = $payment_data['message'];
             $momo_time = $payment_data['responseTime'];
-    
             if ( $momo_order_id ) {
                 update_post_meta( $order_id, '_billing_momo_order_id', $momo_order_id );
             }
@@ -82,8 +79,6 @@ if(!class_exists('Kanbox_MoMo_Payment_Admin_field')) {
                 update_post_meta( $order_id, '_billing_momo_time', $momo_time );
             }
         }
-    
     }
-    
     Kanbox_MoMo_Payment_Admin_field::get_instance();
 }

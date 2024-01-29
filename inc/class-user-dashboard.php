@@ -14,7 +14,7 @@ if(!class_exists('Kanbox_MoMo_WooCommerce_User_Dashboard')) {
             $payment_method = $order->get_payment_method();
             $controller = false;
 
-            switch($payment_method): 
+            switch($payment_method):
                 case "momo":
                     $controller = new MoMo_Qr_Payment_GateWay_Controller();
                 break;
