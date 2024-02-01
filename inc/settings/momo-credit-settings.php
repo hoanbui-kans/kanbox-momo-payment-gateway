@@ -1,4 +1,4 @@
-<?php 
+<?php
 /* Add payment settings with MoMo enterprise e-wallet, deploy 2 real and test environments */
 
 return array(
@@ -57,6 +57,13 @@ return array(
         'type'        => 'text',
         'description' => __('Tùy chỉnh, thông tin thêm được định dạng cộng thêm mã đơn hàng khi khách hàng thanh toán', 'kanbox'),
         'desc_tip'    => true,
+    ),
+    'enabled_user_info' => array(
+        'title'       => 'Thông tin của khách hàng',
+        'label'       => __('Bật tính tính năng gửi: Tên, địa chỉ Email, số điện thoại của khách hàng lên dữ liệu thanh toán MoMo', 'kanbox'),
+        'type'        => 'checkbox',
+        'description' => __('Nếu được cung cấp, khách hàng với tư cách là người dùng MoMo sẽ nhận được thông báo hoặc email (như đã chọn).', 'kanbox'),
+        'default'     => 'no'
     ),
     'partner_code' => array(
         'title'       => __('Partner code', 'kanbox'),
