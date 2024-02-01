@@ -40,6 +40,7 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
             $this->storeId = $this->get_option('store_id');
             $this->order_info = $this->get_option('order_info');
             $this->lang = $this->get_option('lang');
+            $this->enabled_user_info = 'yes' === $this->get_option('enabled_user_info');
 
             // Order tracking
             $tracking = 'yes' === $this->get_option( 'tracking_order' );
@@ -151,8 +152,6 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
         * We're processing the payments here
         */
         function process_payment( $order_id ) {
-        
-            global $woocommerce;
             // we need it to get any order detailes
             $order = wc_get_order( $order_id );
             $orderInfo = $this->order_info . $order_id;
@@ -160,8 +159,7 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
             $extraData = $order_id;
 
             if (!empty($order_id) && !$order->is_paid()) {
-                // Update Status to on-hold
-                $order->update_status( 'on-hold', __('Đang tiến hành thanh toán', 'kanbox') );
+
                 $orderId = time().''; // Mã đơn hàng
                 $amount = $order->get_total();
                 $requestId = time(). $order_id;
@@ -186,6 +184,17 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
                     'requestType' => $requestType,
                     'signature' => $signature
                 );
+
+                if($this->enabled_user_info){
+                    $billing_email      = $order->get_billing_email();
+                    $billing_phone      = $order->get_billing_phone();
+                    $billing_name = $order->get_formatted_billing_full_name();
+                    $data['userInfo'] = array(
+                        'name' => $billing_name,
+                        'phoneNumber' => $billing_phone,
+                        'email' => $billing_email,
+                    );
+                }
                 // Send request to serve
                 $result = execPostRequest($this->create_endpoint, wp_json_encode($data));
                 // Out if the request failed
@@ -203,12 +212,14 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
 
                 if($jsonResult && $jsonResult['resultCode'] == 0){
                     WC()->cart->empty_cart();
+                    $order->update_status( 'on-pending', __('Đơn hàng đang tiến hành thanh toán!', 'kanbox') );
                     return array(
                         'result' => 'success',
                         'redirect' => $jsonResult['payUrl'],
                     );
                 } else {
                     wc_add_notice($jsonResult['message'], 'error' );
+                    $order->update_status( 'on-hold', __('Đơn hàng tạo dữ liệu thanh toán không thành công', 'kanbox') );
                     return array(
                         'result' => 'success',
                         'error' => true,
@@ -231,9 +242,8 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
                 'redirect' => $this->get_return_url( $order ),
             );
         }
-    
+
         public function process_refund( $order_id, $amount = NULL, $refund_reason = '' ){
-            
             $order = wc_get_order( $order_id );
             if(!$amount){
                 return new WP_Error( 'wc-order', __( 'Bạn chưa nhập số tiền cần hoàn trả', 'kanbox' ) );
@@ -272,6 +282,17 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
                 'description' => $refund_reason,
                 'signature' => $signature,
             );
+
+            if($this->enabled_user_info){
+                $billing_email      = $order->get_billing_email();
+                $billing_phone      = $order->get_billing_phone();
+                $billing_name = $order->get_formatted_billing_full_name();
+                $data['userInfo'] = array(
+                    'name' => $billing_name,
+                    'phoneNumber' => $billing_phone,
+                    'email' => $billing_email,
+                );
+            }
 
             $result = execPostRequest($this->refund_endpoint, wp_json_encode($data));
 
@@ -349,7 +370,7 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
                     $order->update_status('processing', __('Đơn hàng đã thanh toán thành công và đang được xử lý.'), 'kanbox');
                     wc_reduce_stock_levels($wc_order_id);
                 } else {
-                    $order->update_status('pending', __('Đơn hàng đã thanh toán không thành công và đã chuyển thành chờ thanh toán lại.'), 'kanbox');
+                    $order->update_status('failed', __('Đơn hàng đã thanh toán không thành công và đã chuyển thành chờ thanh toán lại.'), 'kanbox');
                 }
                 
                 header("Location:" . esc_url($this->get_return_url( $order )));
@@ -402,11 +423,11 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
                             $order->update_status('processing', __('Đơn hàng đã được xác nhận thanh toán thành công bằng IPN và đang được xử lý!', 'kanbox'));
                             wc_reduce_stock_levels($wc_order_id);
                         }
+                        return wp_send_json( 1, 200, 1 );
                     } else {
-                        $order->update_status('pending', __('Đơn hàng đã thanh toán không thành công và đã chuyển thành chờ thanh toán lại', 'kanbox'));
+                        $order->update_status('failed', __('Đơn hàng đã thanh toán không thành công và đã chuyển thành chờ thanh toán lại', 'kanbox'));
                         return wp_send_json( 0, 200, 1 );
                     }
-
                 } catch (Exception $e) {
                     return wp_send_json( $response['message'], 206, 1 );
                 }
@@ -422,6 +443,11 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
             global $woocommerce;
             if ( ! WC()->cart ) return $available_gateways;
             $order_total = (float) WC()->cart->get_cart_contents_total();
+            $order_id = wc_get_order_id_by_order_key($_GET['key']);
+            if($order_id){
+                $order = wc_get_order( $order_id );
+                $order_total = $order->get_total();
+            }
             // Disable payment gateway if order/cart total is less than 1000 and more than 50.000.000
             if ( ($order_total > 50000000) || ($order_total < 1000) && isset( $available_gateways[$this->id] ) ) {
                 unset( $available_gateways[ $this->id ] );
