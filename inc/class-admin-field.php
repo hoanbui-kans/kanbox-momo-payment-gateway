@@ -44,6 +44,11 @@ if(!class_exists('Kanbox_MoMo_Payment_Admin_field')) {
                 'show'  => true,
                 'wrapper_class' => 'form-field-wide',
             );
+            $fields['momo_resultcode'] = array(
+                'label' => __( 'Mã kết quả', 'kanbox' ),
+                'show'  => true,
+                'wrapper_class' => 'form-field-wide',
+            );
             $fields['momo_time'] = array(
                 'label' => __( 'Thời gian', 'kanbox' ),
                 'show'  => true,
@@ -53,13 +58,16 @@ if(!class_exists('Kanbox_MoMo_Payment_Admin_field')) {
         }
     
         public function update_payment_meta_data($order_id, $payment_data){
+
             if(!$order_id) return false;
+
             $momo_order_id = $payment_data['orderId'];
             $momo_transid = $payment_data['transId'];
             $momo_type = $payment_data['payType'];
             $momo_total = $payment_data['amount'];
             $momo_message = $payment_data['message'];
-            $momo_time = $payment_data['responseTime'];
+            $momo_resultcode = $payment_data['resultCode'];
+            $momo_time = get_date_from_gmt(date("Y-m-d H:i:s", $payment_data['responseTime'] / 1000));
             if ( $momo_order_id ) {
                 update_post_meta( $order_id, '_billing_momo_order_id', $momo_order_id );
             }
@@ -74,6 +82,9 @@ if(!class_exists('Kanbox_MoMo_Payment_Admin_field')) {
             }
             if ( $momo_message ) {
                 update_post_meta( $order_id, '_billing_momo_message', $momo_message );
+            }
+            if ( $momo_resultcode ) {
+                update_post_meta( $order_id, '_billing_momo_resultcode', $momo_resultcode );
             }
             if ( $momo_time ) {
                 update_post_meta( $order_id, '_billing_momo_time', $momo_time );

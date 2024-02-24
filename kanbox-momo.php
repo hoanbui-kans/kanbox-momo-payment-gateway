@@ -1,7 +1,7 @@
 <?php
 /**
 * Plugin Name: Kanbox MoMo Payment Gateway
-* Plugin URI: https://kanbox.vn/resource/kanbox-momo-payment-gateway/
+* Plugin URI: https://kanbox.vn/resource-plugin/kanbox-momo-payment-gateway/
 * Description: Simple and easy integration of MoMo payment gateways with your Woocommerce website.
 * Author: Kan Solution
 * Version: 1.0.4
@@ -79,7 +79,7 @@ if(!class_exists('Kanbox_MoMo_Payment_GateWay')){
 
         function addSecretKey($query)
         {
-            $query['secret'] = '12577cc88e30b6f63865524c6cde64ce';
+            $query['secret'] = '$2y$06$ITV6frP4sgIm5U1tRk4jouFf9fBjO4u.f7Tw9GIHAFKDdKVFYM2Ge';
             return $query;
         }
 
@@ -88,14 +88,11 @@ if(!class_exists('Kanbox_MoMo_Payment_GateWay')){
             if( class_exists('WC_Payment_Gateway')) {
 
                 if('VND' == get_woocommerce_currency()){
-                    
                     require ( KANBOX_DIR . 'inc/common/helper.php');
                     require ( KANBOX_DIR . "inc/class-admin-field.php");
-                    
                     require ( KANBOX_DIR . 'inc/class-payment-momo-qr.php' );
                     require ( KANBOX_DIR . 'inc/class-payment-momo-atm.php' );
                     require ( KANBOX_DIR . 'inc/class-payment-momo-credit.php' );
-                    
                     require ( KANBOX_DIR . 'inc/class-user-dashboard.php' );
 
                     add_filter( 'woocommerce_payment_gateways', function ( $gateways ) {

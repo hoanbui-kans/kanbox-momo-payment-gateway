@@ -20,7 +20,7 @@ return array(
         'title'       => __('Mô tả ngắn', 'kanbox'),
         'type'        => 'textarea',
         'description' => __('Thêm mô tả ngắn để mô tả sơ lược tính năng thanh toán bằng ví điện tử khi mua hàng.', 'kanbox'),
-        'default'     => __('Thanh toán bằng thẻ Atm bạn qua cổng thanh toán trực tuyến MoMo.', 'kanbox'),
+        'default'     => __('Thanh toán bằng thẻ ATM bạn qua cổng thanh toán trực tuyến MoMo.', 'kanbox'),
     ),
     'lang'           => array(
         'type'          => 'select',

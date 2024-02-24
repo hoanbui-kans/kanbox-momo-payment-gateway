@@ -143,7 +143,7 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
                 echo wpautop( wp_kses_post( $this->description ));
             } else {
                ?>
-               <p><?php esc_attr_e('Thanh toán trực tuyến bằng mã quét momo, xin vui lòng xử dụng app', 'kanbox');?> <a href="https://referral.momo.vn/ref/MDkwMzg4ODc4MSZndGJiMjAyMg==/referral_others"><?php esc_attr_e('ví điện tử MoMo', 'kanbox');?></a> <?php esc_attr_e('để thanh toán miễn phí', 'kanbox');?></p>
+               <p><?php esc_attr_e('Thanh toán trực tuyến bằng mã quét momo, xin vui lòng sử dụng app', 'kanbox');?> <a href="https://referral.momo.vn/ref/MDkwMzg4ODc4MSZndGJiMjAyMg==/referral_others"><?php esc_attr_e('ví điện tử MoMo', 'kanbox');?></a> <?php esc_attr_e('để thanh toán miễn phí', 'kanbox');?></p>
                <?php
             }
         }
@@ -440,13 +440,14 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
         * Validate Amount
         */
         function turn_off_payment_gateway( $available_gateways ) {
-            global $woocommerce;
             if ( ! WC()->cart ) return $available_gateways;
             $order_total = (float) WC()->cart->get_cart_contents_total();
-            $order_id = wc_get_order_id_by_order_key($_GET['key']);
-            if($order_id){
-                $order = wc_get_order( $order_id );
-                $order_total = $order->get_total();
+            if(isset($_GET['key'])){
+                $order_id = wc_get_order_id_by_order_key($_GET['key']);
+                if($order_id){
+                    $order = wc_get_order( $order_id );
+                    $order_total = $order->get_total();
+                }
             }
             // Disable payment gateway if order/cart total is less than 1000 and more than 50.000.000
             if ( ($order_total > 50000000) || ($order_total < 1000) && isset( $available_gateways[$this->id] ) ) {
@@ -546,7 +547,7 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
                                 </div>
                             </div>
                             <button data-repeater-create type="button" class="button-primary">
-                                <?php esc_attr_e('Add', 'kanbox');?>
+                                <?php esc_attr_e('Thêm mới', 'kanbox');?>
                             </button>
                         </div>
                     </div>

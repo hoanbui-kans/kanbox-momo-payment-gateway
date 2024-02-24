@@ -1,0 +1,486 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Marou MoMo\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-02-23 04:01+0000\n"
+"PO-Revision-Date: 2024-02-23 04:01+0000\n"
+"Last-Translator: \n"
+"Language-Team: English (United States)\n"
+"Language: en_US\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.6; wp-6.4.3\n"
+"X-Domain: kanbox"
+
+#: inc/settings/momo-atm-settings.php:74 inc/settings/momo-atm-settings.php:108
+#: inc/settings/momo-credit-settings.php:75
+#: inc/settings/momo-credit-settings.php:109
+#: inc/settings/momo-qr-settings.php:75 inc/settings/momo-qr-settings.php:109
+msgid "Access Key"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:76
+#: inc/settings/momo-credit-settings.php:77
+#: inc/settings/momo-qr-settings.php:77
+msgid "Access Key được cấp bởi MoMo Business - môi trường thực tế"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:86 inc/settings/momo-atm-settings.php:122
+#: inc/settings/momo-credit-settings.php:87
+#: inc/settings/momo-credit-settings.php:123
+#: inc/settings/momo-qr-settings.php:87 inc/settings/momo-qr-settings.php:123
+msgid "API endpoint"
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:253 inc/class-payment-momo-credit.php:249
+#: inc/class-payment-momo-qr.php:249
+msgid "Bạn chưa nhập số tiền cần hoàn trả"
+msgstr ""
+
+#: inc/class-user-dashboard.php:37
+msgid "Bạn chưa thanh toán cho đơn hàng này"
+msgstr ""
+
+#: kanbox-momo.php:50
+msgid ""
+"Bạn cần sử dụng Đồng Việt Nam <code>(₫)</code> làm đơn vị tiền tệ để sử dụng "
+"thanh toán MoMo đúng cách."
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:94
+#: inc/settings/momo-credit-settings.php:95
+#: inc/settings/momo-qr-settings.php:95
+msgid "Bật chế độ thử nghiệm"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:6 inc/settings/momo-credit-settings.php:7
+msgid "Bật thanh toán quét mã MoMo"
+msgstr ""
+
+#: inc/settings/momo-qr-settings.php:7
+msgid "Bật thanh toán quét mã MoMo bằng mã Qr"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:62
+#: inc/settings/momo-credit-settings.php:63
+#: inc/settings/momo-qr-settings.php:63
+msgid ""
+"Bật tính tính năng gửi: Tên, địa chỉ Email, số điện thoại của khách hàng lên "
+"dữ liệu thanh toán MoMo"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:37
+#: inc/settings/momo-credit-settings.php:38
+#: inc/settings/momo-qr-settings.php:38
+msgid "Bật tính tính năng hoàn tiền trên đơn hàng"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:93
+#: inc/settings/momo-credit-settings.php:94
+#: inc/settings/momo-qr-settings.php:94
+msgid "Chế độ thử nghiệm"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:145
+#: inc/settings/momo-credit-settings.php:146
+#: inc/settings/momo-qr-settings.php:146
+msgid "Cặp khóa key - value với Session key và OrderGroupid."
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:12
+msgid "Cổng thanh toán MoMo cho thẻ nội địa (ATM)"
+msgstr ""
+
+#: inc/class-payment-momo-credit.php:12
+msgid "Cổng thanh toán MoMo cho thẻ quốc tế (Credit card)"
+msgstr ""
+
+#: inc/class-payment-momo-qr.php:11
+msgid "Cổng thanh toán quét mã QR MoMo"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:15
+msgid "Cổng thanh toán trực tuyến MoMo (ATM)"
+msgstr ""
+
+#: inc/settings/momo-credit-settings.php:16
+msgid "Cổng thanh toán trực tuyến MoMo (Visa/Master/JCB)"
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:550 inc/class-payment-momo-credit.php:544
+#: inc/class-payment-momo-qr.php:537
+msgid "Delete"
+msgstr ""
+
+#. URI of the plugin
+msgid "https://kanbox.vn/resource/kanbox-momo-payment-gateway/"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://zalo.me/0903888781"
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:13 inc/class-payment-momo-credit.php:13
+#: inc/class-payment-momo-qr.php:12
+msgid "Hỗ trợ thanh toán quét mã qua ứng dụng ví điện tử MoMo"
+msgstr ""
+
+#: inc/class-user-dashboard.php:67
+msgid "ID giao dịch"
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:257 inc/class-payment-momo-credit.php:253
+#: inc/class-payment-momo-qr.php:253
+msgid "ID thanh toán không nằm trong Database"
+msgstr ""
+
+#. Author of the plugin
+msgid "Kan Solution"
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:269 inc/class-payment-momo-credit.php:265
+#: inc/class-payment-momo-qr.php:265
+msgid "Không tìm thấy ID giao dịch"
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:205 inc/class-payment-momo-atm.php:209
+#: inc/class-payment-momo-atm.php:238 inc/class-payment-momo-credit.php:202
+#: inc/class-payment-momo-credit.php:206 inc/class-payment-momo-credit.php:235
+#: inc/class-payment-momo-qr.php:201 inc/class-payment-momo-qr.php:205
+#: inc/class-payment-momo-qr.php:234
+msgid ""
+"Lỗi khởi tạo thanh toán, xin vui lòng kiểm tra lại cài đặt và thử lại sau."
+msgstr ""
+
+#. Name of the plugin
+msgid "Marou MoMo"
+msgstr ""
+
+#: inc/class-admin-field.php:28
+msgid "Mã giao dịch thanh toán MoMo"
+msgstr ""
+
+#: inc/class-admin-field.php:48
+msgid "Mã kết quả"
+msgstr ""
+
+#: inc/class-user-dashboard.php:71
+msgid "Mã thanh toán"
+msgstr ""
+
+#: inc/class-admin-field.php:23
+msgid "Mã đơn thanh toán MoMo"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:20
+#: inc/settings/momo-credit-settings.php:21
+#: inc/settings/momo-qr-settings.php:21
+msgid "Mô tả ngắn"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:27
+msgid "Ngôn ngữ"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:64
+#: inc/settings/momo-credit-settings.php:65
+#: inc/settings/momo-qr-settings.php:65
+msgid ""
+"Nếu được cung cấp, khách hàng với tư cách là người dùng MoMo sẽ nhận được "
+"thông báo hoặc email (như đã chọn)."
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:534 inc/class-payment-momo-credit.php:528
+#: inc/class-payment-momo-qr.php:521
+msgid "orderGroupId"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:68 inc/settings/momo-atm-settings.php:101
+#: inc/settings/momo-credit-settings.php:69
+#: inc/settings/momo-credit-settings.php:102
+#: inc/settings/momo-qr-settings.php:69 inc/settings/momo-qr-settings.php:102
+msgid "Partner code"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:70
+#: inc/settings/momo-credit-settings.php:71
+#: inc/settings/momo-qr-settings.php:71
+msgid "Partner code được cấp bởi MoMo Business - môi trường thực tế"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:129
+#: inc/settings/momo-atm-settings.php:130
+#: inc/settings/momo-credit-settings.php:130
+#: inc/settings/momo-credit-settings.php:131
+#: inc/settings/momo-qr-settings.php:130 inc/settings/momo-qr-settings.php:131
+msgid "Phân nhóm đơn hàng"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:132
+#: inc/settings/momo-credit-settings.php:133
+#: inc/settings/momo-qr-settings.php:133
+msgid ""
+"Phân nhóm đơn hàng cho các hoạt động vận hành sau này. <a target=\"_blank\" "
+"href=\"https://developers.momo.vn/v3/vi/docs/payment/api/wallet/pay-with-"
+"token\">Hướng dẫn sử dụng</a>"
+msgstr ""
+
+#: inc/class-admin-field.php:33
+msgid "Phương thức thanh toán"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:80 inc/settings/momo-atm-settings.php:115
+#: inc/settings/momo-credit-settings.php:81
+#: inc/settings/momo-credit-settings.php:116
+#: inc/settings/momo-qr-settings.php:81 inc/settings/momo-qr-settings.php:116
+msgid "Secret key"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:82
+#: inc/settings/momo-credit-settings.php:83
+#: inc/settings/momo-qr-settings.php:83
+msgid "Secret key được cấp bởi MoMo Business - môi trường thực tế"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:137
+#: inc/settings/momo-credit-settings.php:138
+#: inc/settings/momo-qr-settings.php:138
+msgid "Session tracking key"
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"Simple and easy integration of MoMo payment gateways with your Woocommerce "
+"website."
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:43
+#: inc/settings/momo-credit-settings.php:44
+#: inc/settings/momo-qr-settings.php:44
+msgid "Store ID"
+msgstr ""
+
+#: inc/class-user-dashboard.php:32
+msgid "Thanh toán"
+msgstr ""
+
+#: inc/settings/momo-qr-settings.php:24
+msgid "Thanh toán bằng quét mã QR bạn trên ứng dụng MoMo."
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:23
+msgid "Thanh toán bằng thẻ ATM bạn qua cổng thanh toán trực tuyến MoMo."
+msgstr ""
+
+#: inc/settings/momo-credit-settings.php:24
+msgid ""
+"Thanh toán bằng thẻ Visa/Master/JCB bạn qua cổng thanh toán trực tuyến MoMo."
+msgstr ""
+
+#: inc/settings/momo-qr-settings.php:16
+msgid "Thanh toán bằng ví MoMo"
+msgstr ""
+
+#: inc/class-user-dashboard.php:41
+msgid "Thanh toán lại đơn hàng"
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:146
+msgid "Thanh toán trực tuyến bằng mã quét momo, xin vui lòng sử dụng App"
+msgstr ""
+
+#: inc/class-payment-momo-credit.php:146 inc/class-payment-momo-qr.php:142
+msgid "Thanh toán trực tuyến bằng mã quét momo, xin vui lòng sử dụng app"
+msgstr ""
+
+#: kanbox-momo.php:43
+msgid ""
+"Thanh toán với MoMo không chạy vì Plugin WooCommerce chưa hoạt động. Vui "
+"lòng kích hoạt plugin WooCommerce trước."
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:68 inc/class-payment-momo-credit.php:68
+#: inc/class-payment-momo-qr.php:66
+msgid "Thanh toán đơn hàng: "
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:22
+#: inc/settings/momo-credit-settings.php:23
+#: inc/settings/momo-qr-settings.php:23
+msgid ""
+"Thêm mô tả ngắn để mô tả sơ lược tính năng thanh toán bằng ví điện tử khi "
+"mua hàng."
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:556 inc/class-payment-momo-credit.php:550
+#: inc/class-payment-momo-qr.php:543
+msgid "Thêm mới"
+msgstr ""
+
+#: inc/class-user-dashboard.php:36 inc/class-user-dashboard.php:63
+msgid "Thông tin thanh toán"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:55
+#: inc/settings/momo-credit-settings.php:56
+#: inc/settings/momo-qr-settings.php:56
+msgid "Thông tin đơn hàng"
+msgstr ""
+
+#: inc/class-admin-field.php:53 inc/class-user-dashboard.php:89
+msgid "Thời gian"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:14
+#: inc/settings/momo-credit-settings.php:15
+#: inc/settings/momo-qr-settings.php:15
+msgid "Tiêu đề mà người dùng có thể thấy được trong quá trình thanh toán."
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:144
+#: inc/settings/momo-credit-settings.php:145
+#: inc/settings/momo-qr-settings.php:145
+msgid "Tracking order group id"
+msgstr ""
+
+#: inc/class-admin-field.php:43 inc/class-user-dashboard.php:75
+msgid "Trạng thái"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:49
+#: inc/settings/momo-credit-settings.php:50
+#: inc/settings/momo-qr-settings.php:50
+msgid "Tên cửa hàng"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:45
+#: inc/settings/momo-credit-settings.php:46
+#: inc/settings/momo-qr-settings.php:46
+msgid "Tùy chỉnh, mã cửa hàng sẽ được thêm thông tin vào đơn thanh toán"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:57
+#: inc/settings/momo-credit-settings.php:58
+#: inc/settings/momo-qr-settings.php:58
+msgid ""
+"Tùy chỉnh, thông tin thêm được định dạng cộng thêm mã đơn hàng khi khách "
+"hàng thanh toán"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:51
+#: inc/settings/momo-credit-settings.php:52
+#: inc/settings/momo-qr-settings.php:52
+msgid "Tùy chỉnh, tên cửa hàng sẽ được thêm thông tin vào đơn thanh toán"
+msgstr ""
+
+#: inc/class-admin-field.php:38 inc/class-user-dashboard.php:83
+msgid "Tổng thanh toán"
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:147 inc/class-payment-momo-credit.php:146
+#: inc/class-payment-momo-qr.php:143
+msgid "ví điện tử MoMo"
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:164
+msgid "Đang tiến hành thanh toán"
+msgstr ""
+
+#: inc/class-user-dashboard.php:55
+msgid "Đã hoàn lại tiền"
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:309 inc/class-payment-momo-credit.php:304
+#: inc/class-payment-momo-qr.php:304
+msgid "Đã hoàn lại tiền bằng thanh toán MoMo"
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:261 inc/class-payment-momo-credit.php:257
+#: inc/class-payment-momo-qr.php:257
+msgid "Đơn hàng này đã được hoàn trả"
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:225 inc/class-payment-momo-credit.php:222
+#: inc/class-payment-momo-qr.php:221
+msgid "Đơn hàng tạo dữ liệu thanh toán không thành công"
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:218 inc/class-payment-momo-credit.php:215
+#: inc/class-payment-momo-qr.php:214
+msgid "Đơn hàng đang tiến hành thanh toán!"
+msgstr ""
+
+#: inc/class-payment-momo-credit.php:428
+msgid ""
+"Đơn hàng đã thanh toán không thành công và đã chuyển thành chờ thanh toán lại"
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:236 inc/class-payment-momo-credit.php:233
+#: inc/class-payment-momo-qr.php:232
+msgid ""
+"Đơn hàng đã được thanh toán, xin vui lòng liên hệ quản trị viên để được hỗ "
+"trợ."
+msgstr ""
+
+#: inc/class-payment-momo-credit.php:423
+msgid ""
+"Đơn hàng đã được xác nhận thanh toán thành công bằng IPN và đang được xử lý!"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:103
+#: inc/settings/momo-atm-settings.php:110
+#: inc/settings/momo-atm-settings.php:117
+#: inc/settings/momo-atm-settings.php:124
+#: inc/settings/momo-credit-settings.php:104
+#: inc/settings/momo-credit-settings.php:111
+#: inc/settings/momo-credit-settings.php:118
+#: inc/settings/momo-credit-settings.php:125
+#: inc/settings/momo-qr-settings.php:104 inc/settings/momo-qr-settings.php:111
+#: inc/settings/momo-qr-settings.php:118 inc/settings/momo-qr-settings.php:125
+msgid "Được cấp bởi MoMo Business - môi trường thử nghiệm"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:88
+#: inc/settings/momo-credit-settings.php:89
+#: inc/settings/momo-qr-settings.php:89
+msgid "Được cấp bởi MoMo Business - môi trường thực tế"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:96
+#: inc/settings/momo-credit-settings.php:97
+#: inc/settings/momo-qr-settings.php:97
+msgid ""
+"Đặt cổng thanh toán ở chế độ thử nghiệm bằng cách sử dụng các khóa API thử "
+"nghiệm."
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:16
+#: inc/settings/momo-credit-settings.php:17
+#: inc/settings/momo-qr-settings.php:17
+msgid ""
+"Để sử dụng được chính xác, hãy xem thêm <a href=\"https://developers.momo."
+"vn/v3/docs/app-center/design-guideline/branding-guideline/\"> hướng dẫn sử "
+"dụng thương hiệu MoMo</a> trong quá trình thanh toán"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:39
+#: inc/settings/momo-credit-settings.php:40
+#: inc/settings/momo-qr-settings.php:40
+msgid ""
+"Để sử dụng được tính năng hoàn tiền, bạn cần được cho phép sử dụng API hoàn "
+"tiền của MoMo Business"
+msgstr ""
+
+#: inc/settings/momo-atm-settings.php:139
+#: inc/settings/momo-credit-settings.php:140
+#: inc/settings/momo-qr-settings.php:140
+msgid "Định nghĩa Session key cho giá trị quy định phân nhóm đơn hàng"
+msgstr ""
+
+#: inc/class-payment-momo-atm.php:147 inc/class-payment-momo-credit.php:146
+#: inc/class-payment-momo-qr.php:144
+msgid "để thanh toán miễn phí"
+msgstr ""

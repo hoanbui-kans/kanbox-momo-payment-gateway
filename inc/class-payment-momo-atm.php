@@ -9,7 +9,7 @@ if(!class_exists('MoMo_Atm_Payment_GateWay_Controller')){
             $this->id = 'momo-atm'; // Payment gateway plugin ID
             $this->icon =  KANBOX_URL . 'assets/logo-atm.png'; // URL of the icon that will be displayed on checkout page near your gateway name
             $this->has_fields = true; // in case you need a custom credit card form
-            $this->method_title = __('Cổng thanh toán MoMo cho thẻ nội địa (Atm)', 'kanbox');
+            $this->method_title = __('Cổng thanh toán MoMo cho thẻ nội địa (ATM)', 'kanbox');
             $this->method_description = __('Hỗ trợ thanh toán quét mã qua ứng dụng ví điện tử MoMo', 'kanbox'); // will be displayed on the options page
 
             // Gateways can support subscriptions, refunds, saved payment methods,
@@ -143,7 +143,7 @@ if(!class_exists('MoMo_Atm_Payment_GateWay_Controller')){
                 echo wpautop( wp_kses_post( $this->description ));
             } else {
                ?>
-               <p><?php esc_attr_e('Thanh toán trực tuyến bằng mã quét momo, xin vui lòng xử dụng App', 'kanbox');?> <a href="https://referral.momo.vn/ref/MDkwMzg4ODc4MSZndGJiMjAyMg==/referral_others">
+               <p><?php esc_attr_e('Thanh toán trực tuyến bằng mã quét momo, xin vui lòng sử dụng App', 'kanbox');?> <a href="https://referral.momo.vn/ref/MDkwMzg4ODc4MSZndGJiMjAyMg==/referral_others">
                 <?php esc_attr_e('ví điện tử MoMo', 'kanbox');?></a> <?php esc_attr_e('để thanh toán miễn phí', 'kanbox');?></p>
                <?php
             }
@@ -446,13 +446,14 @@ if(!class_exists('MoMo_Atm_Payment_GateWay_Controller')){
         * Validate Amount
         */
         function turn_off_payment_gateway( $available_gateways ) {
-            global $woocommerce;
             if ( ! WC()->cart ) return $available_gateways;
             $order_total = (float) WC()->cart->get_cart_contents_total();
-            $order_id = wc_get_order_id_by_order_key($_GET['key']);
-            if($order_id){
-                $order = wc_get_order( $order_id );
-                $order_total = $order->get_total();
+            if(isset($_GET['key'])){
+                $order_id = wc_get_order_id_by_order_key($_GET['key']);
+                if($order_id){
+                    $order = wc_get_order( $order_id );
+                    $order_total = $order->get_total();
+                }
             }
             // Disable payment gateway if order/cart total is less than 1000 and more than 50.000.000
             if ( ($order_total > 50000000) || ($order_total < 1000) && isset( $available_gateways[$this->id] ) ) {
@@ -552,7 +553,7 @@ if(!class_exists('MoMo_Atm_Payment_GateWay_Controller')){
                                 </div>
                             </div>
                             <button data-repeater-create type="button" class="button-primary">
-                                <?php esc_attr_e('Add', 'kanbox');?>
+                                <?php esc_attr_e('Thêm mới', 'kanbox');?>
                             </button>
                         </div>
                     </div>
