@@ -7,7 +7,7 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
         function __construct ()
         {
             $this->id = 'momo-credit'; // Payment gateway plugin ID
-            $this->icon = KANBOX_URL . 'assets/logo-visa-master-jcb.png'; // URL of the icon that will be displayed on checkout page near your gateway name
+            $this->icon = KANBOX_MOMO_URL . 'assets/logo-visa-master-jcb.png'; // URL of the icon that will be displayed on checkout page near your gateway name
             $this->has_fields = true; // in case you need a custom credit card form
             $this->method_title = __('Cổng thanh toán MoMo cho thẻ quốc tế (Credit card)', 'kanbox');
             $this->method_description = __('Hỗ trợ thanh toán quét mã qua ứng dụng ví điện tử MoMo', 'kanbox'); // will be displayed on the options page
@@ -43,29 +43,18 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
             $this->enabled_user_info = 'yes' === $this->get_option('enabled_user_info');
 
             // Order tracking
-            $tracking = 'yes' === $this->get_option( 'tracking_order' );
-            $this->orderGroupId = "";
+            $this->tracking = 'yes' === $this->get_option( 'tracking_order' );
+            $this->session_key = $this->get_option('session_key');
+            $this->order_group_ids = [];
 
-            if($tracking && !$this->testmode){
-                $session_key = $this->get_option('session_key');
-                $order_group_ids = [];
-                $this->group_ids = $this->get_option( 'order_group_ids' );
-
-                if($this->group_ids){
-                    $order_group_ids = json_decode($this->group_ids);
-                }
-
-                if(isset($_COOKIE[$session_key])) {
-                    foreach($order_group_ids as $key => $value){
-                        if($value->label == $_COOKIE['location']){
-                            $this->orderGroupId = $value->value;
-                        }
-                    }
-                }
+            $group_ids = $this->get_option( 'order_group_ids' );
+                
+            if($group_ids){
+                $this->order_group_ids = json_decode($group_ids);
             }
 
             if(!$this->order_info){
-                $this->order_info = __('Thanh toán đơn hàng: ', 'kanbox');
+                $this->order_info = __('MH_', 'kanbox');
             }
 
             // Initialize variables
@@ -125,7 +114,7 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
         */
         public function init_form_fields()
         {
-            $this->form_fields = include( KANBOX_DIR . 'inc/settings/momo-credit-settings.php');
+            $this->form_fields = include( KANBOX_MOMO_DIR . 'inc/settings/momo-credit-settings.php');
         }
     
         /**
@@ -151,18 +140,28 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
         /*
         * We're processing the payments here
         */
-        function process_payment( $order_id ) {
+        function process_payment( $wc_order_id ) {
             // we need it to get any order detailes
-            $order = wc_get_order( $order_id );
-            $orderInfo = $this->order_info . $order_id;
+            $order = wc_get_order( $wc_order_id );
+            $orderInfo = $this->order_info . $wc_order_id;
             $jsonResult = false;
-            $extraData = $order_id;
+            $extraData = $wc_order_id;
+            $orderGroupId = "";
 
-            if (!empty($order_id) && !$order->is_paid()) {
+            if($this->tracking && $this->session_key && !$this->testmode){
+                $session_key = $order->get_meta($this->session_key, true);
+                foreach($this->order_group_ids as $key => $value){
+                    if($value->label == $session_key){
+                        $orderGroupId = $value->value;
+                    }
+                }
+            }
+
+            if (!empty($wc_order_id) && !$order->is_paid()) {
 
                 $orderId = time().''; // Mã đơn hàng
                 $amount = $order->get_total();
-                $requestId = time(). $order_id;
+                $requestId = time(). $wc_order_id;
                 $requestType = "payWithCC";
                 //before sign HMAC SHA256 signature
                 $rawHash = "accessKey=" . $this->accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $this->ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $this->partnerCode . "&redirectUrl=" . $this->redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
@@ -174,7 +173,7 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
                     'requestId' => $requestId,
                     'amount' => $amount,
                     'orderId' => $orderId,
-                    'orderGroupId' => $this->orderGroupId,
+                    'orderGroupId' => $orderGroupId,
                     'orderInfo' => $orderInfo,
                     'redirectUrl' => $this->redirectUrl,
                     'ipnUrl' => $this->ipnUrl,
@@ -243,11 +242,14 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
             );
         }
 
-        public function process_refund( $order_id, $amount = NULL, $refund_reason = '' ){
-            $order = wc_get_order( $order_id );
+        public function process_refund( $wc_order_id, $amount = NULL, $refund_reason = '' ){
+
+            $order = wc_get_order( $wc_order_id );
+
             if(!$amount){
                 return new WP_Error( 'wc-order', __( 'Bạn chưa nhập số tiền cần hoàn trả', 'kanbox' ) );
             }
+
             // If it's something else such as a WC_Order_Refund, we don't want that.
             if( ! is_a( $order, 'WC_Order') ) {
                 return new WP_Error( 'wc-order', __( 'ID thanh toán không nằm trong Database', 'kanbox' ) );
@@ -258,8 +260,8 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
             }
 
             $orderId = time().''; // Mã đơn hàng
-            $requestId = time(). $order_id;
-            $transId = get_post_meta( $order_id, '_billing_momo_transid', true );
+            $requestId = time(). $wc_order_id;
+            $transId = $order->get_meta('_billing_momo_transid', true );
 
             if(!$transId){
                 return new WP_Error( 'wc-order', __( 'Không tìm thấy ID giao dịch', 'kanbox' ) );
@@ -306,9 +308,10 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
             }
         }
 
-        public function query_transaction( $order_id ){
+        public function query_transaction( $wc_order_id ){
 
-            $transId = get_post_meta( $order_id, '_billing_momo_order_id', true );
+            $order = wc_get_order( $wc_order_id );
+            $transId = $order->get_meta('_billing_momo_transid', true );
             $requestId = time()."";
 
             if(!$transId) return;
@@ -443,9 +446,9 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
             if ( ! WC()->cart ) return $available_gateways;
             $order_total = (float) WC()->cart->get_cart_contents_total();
             if(isset($_GET['key'])){
-                $order_id = wc_get_order_id_by_order_key($_GET['key']);
-                if($order_id){
-                    $order = wc_get_order( $order_id );
+                $wc_order_id = wc_get_order_id_by_order_key($_GET['key']);
+                if($wc_order_id){
+                    $order = wc_get_order( $wc_order_id );
                     $order_total = $order->get_total();
                 }
             }
@@ -460,8 +463,8 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
         * Script for customize option for orderGroupId
         */
         function init_setting_scripts(){
-            wp_enqueue_script('_kanbox_repeater', KANBOX_URL . 'assets/js/repeater.js', ['jquery'], false, []);
-            wp_enqueue_script('_kanbox_setting', KANBOX_URL . 'assets/js/settings.js', ['jquery'], false, []);
+            wp_enqueue_script('_kanbox_repeater', KANBOX_MOMO_URL . 'assets/js/repeater.js', ['jquery'], false, []);
+            wp_enqueue_script('_kanbox_setting', KANBOX_MOMO_URL . 'assets/js/settings.js', ['jquery'], false, []);
             wp_localize_script('_kanbox_setting', 'script_data', json_decode($this->get_option( 'order_group_ids' )));
         }
 

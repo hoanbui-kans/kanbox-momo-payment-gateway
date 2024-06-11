@@ -57,9 +57,9 @@ if(!class_exists('Kanbox_MoMo_Payment_Admin_field')) {
             return $fields;
         }
     
-        public function update_payment_meta_data($order_id, $payment_data){
+        public function update_payment_meta_data($wc_order_id, $payment_data){
 
-            if(!$order_id) return false;
+            if(!$wc_order_id) return false;
 
             $momo_order_id = $payment_data['orderId'];
             $momo_transid = $payment_data['transId'];
@@ -68,27 +68,32 @@ if(!class_exists('Kanbox_MoMo_Payment_Admin_field')) {
             $momo_message = $payment_data['message'];
             $momo_resultcode = $payment_data['resultCode'];
             $momo_time = get_date_from_gmt(date("Y-m-d H:i:s", $payment_data['responseTime'] / 1000));
+
+            $order = wc_get_order( $wc_order_id );
+
             if ( $momo_order_id ) {
-                update_post_meta( $order_id, '_billing_momo_order_id', $momo_order_id );
+                $order->update_meta_data( '_billing_momo_order_id', $momo_order_id );
             }
             if ( $momo_transid ) {
-                update_post_meta( $order_id, '_billing_momo_transid', $momo_transid );
+                $order->update_meta_data( '_billing_momo_transid', $momo_transid );
             }
             if ( $momo_type ) {
-                update_post_meta( $order_id, '_billing_momo_type', $momo_type );
+                $order->update_meta_data( '_billing_momo_type', $momo_type );
             }
             if ( $momo_total ) {
-                update_post_meta( $order_id, '_billing_momo_total', $momo_total );
+                $order->update_meta_data( '_billing_momo_total', $momo_total );
             }
             if ( $momo_message ) {
-                update_post_meta( $order_id, '_billing_momo_message', $momo_message );
+                $order->update_meta_data( '_billing_momo_message', $momo_message );
             }
             if ( $momo_resultcode ) {
-                update_post_meta( $order_id, '_billing_momo_resultcode', $momo_resultcode );
+                $order->update_meta_data( '_billing_momo_resultcode', $momo_resultcode );
             }
             if ( $momo_time ) {
-                update_post_meta( $order_id, '_billing_momo_time', $momo_time );
+                $order->update_meta_data( '_billing_momo_time', $momo_time );
             }
+
+            $order->save();
         }
     }
     Kanbox_MoMo_Payment_Admin_field::get_instance();

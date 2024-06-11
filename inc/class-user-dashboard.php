@@ -24,6 +24,7 @@ if(!class_exists('Kanbox_MoMo_WooCommerce_User_Dashboard')) {
                     $controller = new MoMo_Credit_Payment_GateWay_Controller();
                 break;
             endswitch;
+            
             if( $controller ):
                 if( !$is_paid && $order->get_status() != 'refunded' ):
                     $payment = $controller->process_payment($order->get_id());
@@ -44,7 +45,17 @@ if(!class_exists('Kanbox_MoMo_WooCommerce_User_Dashboard')) {
                                         </a>
                                     </td>
                                 </tr>
-                                <?php endif; ?>
+                                <?php
+                            else: 
+                                ?>
+                                <tr>
+                                    <th><?php esc_attr_e('Thông tin lỗi', 'kanbox');?></th>
+                                    <td>
+                                    <?php echo $payment['message'];?>
+                                    </td>
+                                </tr>
+                                <?php
+                            endif; ?>
                         </tbody>
                     </table>
                 <?php
@@ -52,7 +63,7 @@ if(!class_exists('Kanbox_MoMo_WooCommerce_User_Dashboard')) {
                     if($order->get_status() == 'refunded'){
                         $query_transaction = array(
                             'message' => __( 'Đã hoàn lại tiền', 'kanbox'),
-                            'orderId' => get_post_meta($order->get_id(), '_billing_momo_order_id', true)
+                            'orderId' => $order->get_meta('_billing_momo_order_id', true)
                         );
                     } else {
                         $query_transaction = $controller->query_transaction($order->get_id());

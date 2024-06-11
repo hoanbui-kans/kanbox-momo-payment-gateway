@@ -135,7 +135,7 @@ return array(
         'desc_tip'    => false,
     ),
     'session_key' => array(
-        'title'       => __('Session tracking key', 'kanbox'),
+        'title'       => __('Order custom field tracking key', 'kanbox'),
         'type'        => 'text',
         'description' => __('Định nghĩa Session key cho giá trị quy định phân nhóm đơn hàng', 'kanbox'),
         'desc_tip'    => true,

@@ -248,7 +248,7 @@ msgstr ""
 #: inc/settings/momo-atm-settings.php:137
 #: inc/settings/momo-credit-settings.php:138
 #: inc/settings/momo-qr-settings.php:138
-msgid "Session tracking key"
+msgid "Order custom field tracking key"
 msgstr ""
 
 #. Description of the plugin
