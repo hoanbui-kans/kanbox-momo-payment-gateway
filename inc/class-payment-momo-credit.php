@@ -309,29 +309,30 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
         }
 
         public function query_transaction( $wc_order_id ){
-
+            
             $order = wc_get_order( $wc_order_id );
-            $transId = $order->get_meta('_billing_momo_transid', true );
+
+            $orderId = $order->get_meta('_billing_momo_order_id', true );
+
             $requestId = time()."";
 
-            if(!$transId) return;
+            if(!$orderId) return;
 
             //before sign HMAC SHA256 signature
-            $rawHash = "accessKey=".$this->accessKey."&orderId=".$transId."&partnerCode=".$this->partnerCode."&requestId=".$requestId;
+            $rawHash = "accessKey=".$this->accessKey."&orderId=".$orderId."&partnerCode=".$this->partnerCode."&requestId=".$requestId;
             $signature = hash_hmac("sha256", $rawHash, $this->secretkey);
-            $requestType = "payWithCC";
 
             $data = array(
                 'partnerCode' => $this->partnerCode,
                 'requestId' => $requestId,
-                'orderId' => $transId,
-                'requestType' => $requestType,
+                'orderId' => $orderId,
                 'signature' => $signature,
                 'lang' => $this->lang
             );
             $jsonResult = [];
             $result = execPostRequest($this->query_endpoint, wp_json_encode($data));
-            $jsonResult = json_decode($result, true);  // decode json
+            $jsonResult = json_decode($result, true);
+            // check signature response
             return $jsonResult;
         }
 

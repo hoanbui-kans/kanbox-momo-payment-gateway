@@ -315,22 +315,20 @@ if(!class_exists('MoMo_Atm_Payment_GateWay_Controller')){
             
             $order = wc_get_order( $wc_order_id );
 
-            $transId = $order->get_meta('_billing_momo_transid', true );
+            $orderId = $order->get_meta('_billing_momo_order_id', true );
 
             $requestId = time()."";
 
-            if(!$transId) return;
+            if(!$orderId) return;
 
             //before sign HMAC SHA256 signature
-            $rawHash = "accessKey=".$this->accessKey."&orderId=".$transId."&partnerCode=".$this->partnerCode."&requestId=".$requestId;
+            $rawHash = "accessKey=".$this->accessKey."&orderId=".$orderId."&partnerCode=".$this->partnerCode."&requestId=".$requestId;
             $signature = hash_hmac("sha256", $rawHash, $this->secretkey);
-            $requestType = "captureWallet";
 
             $data = array(
                 'partnerCode' => $this->partnerCode,
                 'requestId' => $requestId,
-                'orderId' => $transId,
-                'requestType' => $requestType,
+                'orderId' => $orderId,
                 'signature' => $signature,
                 'lang' => $this->lang
             );
