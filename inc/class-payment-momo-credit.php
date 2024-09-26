@@ -390,28 +390,29 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
         function webhook_api_momo_credit_ipn(){
 
             $jsonStr = file_get_contents("php://input"); //read the HTTP body.
-            $json = wp_json_encode($jsonStr);
-           
-            if (!empty($json)) {
+            $payment = json_decode($jsonStr, true);
+
+            if (!empty($payment)) {
+
                 $response = array();
-                $wc_order_id = $json->extraData;
+                $wc_order_id = $payment['extraData'];
                 $order = wc_get_order( $wc_order_id );
 
                 try {
-                    $partnerCode = $json->partnerCode;
-                    $orderId = $json->orderId;
-                    $requestId = $json->requestId;
-                    $amount = $json->amount;
-                    $orderInfo = $json->orderInfo;
-                    $orderType = $json->orderType;
-                    $transId = $json->transId;
-                    $resultCode = $json->resultCode;
-                    $message = $json->message;
-                    $payType = $json->payType;
-                    $responseTime = $json->responseTime;
-                    $extraData = $json->extraData;
-                    $m2signature = $json->signature; //MoMo signature
-                
+                    $partnerCode = $payment['partnerCode'];
+                    $orderId = $payment['orderId'];
+                    $requestId = $payment['requestId'];
+                    $amount = $payment['amount'];
+                    $orderInfo = $payment['orderInfo'];
+                    $orderType = $payment['orderType'];
+                    $transId = $payment['transId'];
+                    $resultCode = $payment['resultCode'];
+                    $message = $payment['message'];
+                    $payType = $payment['payType'];
+                    $responseTime = $payment['responseTime'];
+                    $extraData = $payment['extraData'];
+                    $m2signature = $payment['signature']; //MoMo signature
+
                     //Checksum
                     $rawHash = "accessKey=" . $this->accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&message=" . $message . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo .
                         "&orderType=" . $orderType . "&partnerCode=" . $partnerCode . "&payType=" . $payType . "&requestId=" . $requestId . "&responseTime=" . $responseTime .
@@ -420,23 +421,25 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
                     $partnerSignature = hash_hmac("sha256", $rawHash, $this->secretkey);
 
                     // Update transaction id to dashboard
-                    $this->admin_field->update_payment_meta_data($wc_order_id, $orderId, $transId);
+                    $this->admin_field->update_payment_meta_data($wc_order_id, $payment);
 
                     if ($m2signature == $partnerSignature) {
                         if($order->get_status() != 'processing' && $resultCode == 0) {
-                            $order->update_status('processing', __('Đơn hàng đã được xác nhận thanh toán thành công bằng IPN và đang được xử lý!', 'kanbox'));
+                            $order->update_status('processing', 'Mã thanh toán ' . $orderId . ' được xác nhận bằng IPN và đang được xử lý!');
                             wc_reduce_stock_levels($wc_order_id);
-                        }
-                        return wp_send_json( 1, 200, 1 );
+                        } 
+                        return wp_send_json( 1, 204, 1 );
                     } else {
-                        $order->update_status('failed', __('Đơn hàng đã thanh toán không thành công và đã chuyển thành chờ thanh toán lại', 'kanbox'));
-                        return wp_send_json( 0, 200, 1 );
+                        $order->update_status('pending', 'Mã thanh toán ' . $orderId . ' được xác nhận bằng IPN và đang được xử lý!');
+                        return wp_send_json( 0, 204, 1 );
                     }
+
                 } catch (Exception $e) {
-                    return wp_send_json( $response['message'], 206, 1 );
+                    return wp_send_json( 0, 204, 1 );
+
                 }
             } else {
-                return wp_send_json( 1, 204, 1 );
+                return wp_send_json( 0, 204, 1 );
             }
         }
 

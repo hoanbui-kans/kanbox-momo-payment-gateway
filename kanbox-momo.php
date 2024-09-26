@@ -4,7 +4,7 @@
 * Plugin URI: https://kanbox.vn/resource-plugin/kanbox-momo-payment-gateway/
 * Description: Simple and easy integration of MoMo payment gateways with your Woocommerce website.
 * Author: Kan Solution
-* Version: 1.0.9
+* Version: 1.1.0
 * Author URI: https://zalo.me/0903888781
 * Text Domain: kanbox
 * Domain Path: /languages
@@ -53,7 +53,7 @@ if(!class_exists('Kanbox_MoMo_Payment_GateWay')){
         function decimals_is_not_zero() 
         {
             $class = 'notice notice-warning';
-            $message = __( 'Số thập phân giá trị tiền tệ không phải 0.', 'kanbox' );
+            $message = __( 'Lỗi khi cài đặt thanh toán MoMo với Woocommerce: số thập phân giá trị tiền tệ không phải 0.', 'kanbox' );
             printf( '<div class="%1$s"><p><strong>%2$s</strong></p></div>', $class, $message );
         }
 
