@@ -424,11 +424,20 @@ if(!class_exists('MoMo_Credit_Payment_GateWay_Controller')){
                     $this->admin_field->update_payment_meta_data($wc_order_id, $payment);
 
                     if ($m2signature == $partnerSignature) {
-                        if($order->get_status() != 'processing' && $resultCode == 0) {
-                            $order->update_status('processing', 'Mã thanh toán ' . $orderId . ' được xác nhận bằng IPN và đang được xử lý!');
-                            wc_reduce_stock_levels($wc_order_id);
-                        } 
-                        return wp_send_json( 1, 204, 1 );
+                        if ($order->get_status() == 'completed') {
+                            return wp_send_json(1, 204, 1);
+                        }
+                        
+                        if ($order->get_status() == 'processing' || $resultCode != 0) {
+                            return wp_send_json(1, 204, 1);
+                        }
+                        
+                        // Nếu chưa hoàn thành và đang không xử lý, xử lý logic cập nhật
+                        $order->update_status('processing', 'Mã thanh toán ' . $orderId . ' được xác nhận bằng IPN và đang được xử lý!');
+
+                        wc_reduce_stock_levels($wc_order_id);
+                        
+                        return wp_send_json(1, 204, 1);
                     } else {
                         $order->update_status('pending', 'Mã thanh toán ' . $orderId . ' được xác nhận bằng IPN và đang được xử lý!');
                         return wp_send_json( 0, 204, 1 );

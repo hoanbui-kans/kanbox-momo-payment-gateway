@@ -31,14 +31,10 @@ define( 'KANBOX_MOMO_DIR', plugin_dir_path( __FILE__ ) );
  * @since    2018
  */
 
- add_action( 'before_woocommerce_init', function() {
-	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
-		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
-	}
-} );
-
 if(!class_exists('Kanbox_MoMo_Payment_GateWay')){
+    
     class Kanbox_MoMo_Payment_GateWay {
+
         function __construct() {
             add_action( 'init', array( $this, 'init' ) );
         }
@@ -109,12 +105,14 @@ if(!class_exists('Kanbox_MoMo_Payment_GateWay')){
                     require ( KANBOX_MOMO_DIR . 'inc/class-payment-momo-atm.php' );
                     require ( KANBOX_MOMO_DIR . 'inc/class-payment-momo-credit.php' );
                     require ( KANBOX_MOMO_DIR . 'inc/class-user-dashboard.php' );
+
                     add_filter( 'woocommerce_payment_gateways', function ( $gateways ) {
                         $gateways[] = 'MoMo_Qr_Payment_GateWay_Controller';
                         $gateways[] = 'MoMo_Atm_Payment_GateWay_Controller';
                         $gateways[] = 'MoMo_Credit_Payment_GateWay_Controller';
                         return $gateways;
                     } );
+
                 }
             }
         }

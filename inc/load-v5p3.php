@@ -5,6 +5,7 @@ use YahnisElsts\PluginUpdateChecker\v5\PucFactory as MajorFactory;
 use YahnisElsts\PluginUpdateChecker\v5p3\PucFactory as MinorFactory;
 
 require __DIR__ . '/Puc/v5p3/Autoloader.php';
+
 new Autoloader();
 
 require __DIR__ . '/Puc/v5p3/PucFactory.php';
