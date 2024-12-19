@@ -31,6 +31,12 @@ define( 'KANBOX_MOMO_DIR', plugin_dir_path( __FILE__ ) );
  * @since    2018
  */
 
+add_action( 'before_woocommerce_init', function() {
+	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+	}
+} );
+
 if(!class_exists('Kanbox_MoMo_Payment_GateWay')){
     
     class Kanbox_MoMo_Payment_GateWay {
