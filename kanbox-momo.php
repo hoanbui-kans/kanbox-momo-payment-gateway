@@ -4,7 +4,7 @@
 * Plugin URI: https://kanbox.vn/resource-plugin/kanbox-momo-payment-gateway/
 * Description: Simple and easy integration of MoMo payment gateways with your Woocommerce website.
 * Author: Kan Solution
-* Version: 1.1.0
+* Version: 1.1.2
 * Author URI: https://zalo.me/0903888781
 * Text Domain: kanbox
 * Domain Path: /languages
@@ -107,6 +107,7 @@ if(!class_exists('Kanbox_MoMo_Payment_GateWay')){
                 } else {
                     require ( KANBOX_MOMO_DIR . 'inc/common/helper.php');
                     require ( KANBOX_MOMO_DIR . 'inc/class-admin-field.php');
+                    require ( KANBOX_MOMO_DIR . 'inc/Abstract_MoMo_Payment_Gateway.php' );
                     require ( KANBOX_MOMO_DIR . 'inc/class-payment-momo-qr.php' );
                     require ( KANBOX_MOMO_DIR . 'inc/class-payment-momo-atm.php' );
                     require ( KANBOX_MOMO_DIR . 'inc/class-payment-momo-credit.php' );
